@@ -5,16 +5,16 @@
 namespace my_lib {
     class Node {
     public:
-        int value;
+        int value, min, max;
 
-        Node() : value(0) {
+        Node() : value(0), min{INT_MAX}, max{INT_MIN} {
         }
 
-        explicit Node(int _value) : value(_value) {
+        explicit Node(int _value) : value(_value), min(_value), max(_value) {
         }
     };
 
-    template<typename VAL_TYPE = int, class MRG = std::function<VAL_TYPE(const VAL_TYPE &, const VAL_TYPE &)> >
+    template<typename VAL_TYPE = int>
     class Segment_Tree {
     private:
 #define L (2*node+1)
@@ -23,13 +23,19 @@ namespace my_lib {
         VAL_TYPE NEUTRAL_VALUE = 0;
         int seg_size;
         std::vector<Node> seg;
-        MRG merge;
+
+        Node merge(const Node &a, const Node &b) {
+            Node ret;
+            ret.max = std::max(a.max, b.max);
+            ret.min = std::min(a.min, b.min);
+            return ret;
+        }
 
         Node query(const int lq, const int rq, int node, int l, int r) {
-            if (lq > r || rq < l) return Node(NEUTRAL_VALUE);
+            if (lq > r || rq < l) return {};
             if (lq <= l && r <= rq) return seg[node];
-            return Node(merge(query(lq, rq, L, l, mid).value,
-                              query(lq, rq, R, mid + 1, r).value));
+            return merge(query(lq, rq, L, l, mid),
+                         query(lq, rq, R, mid + 1, r));
         }
 
         void update(const int idx, const VAL_TYPE value, int node, int l, int r) {
@@ -40,13 +46,12 @@ namespace my_lib {
             if (idx <= mid) update(idx, value, L, l, mid);
             else update(idx, value, R, mid + 1, r);
 
-            seg[node] = Node(merge(seg[L].value, seg[R].value));
+            seg[node] = merge(seg[L], seg[R]);
         }
 
     public:
-        explicit Segment_Tree(const int _size, const VAL_TYPE DEF, const MRG &_mrg) : seg_size(_size), merge(_mrg),
-            NEUTRAL_VALUE(DEF) {
-            seg.assign(4 * seg_size, Node(NEUTRAL_VALUE));
+        explicit Segment_Tree(const int _size) : seg_size(_size) {
+            seg.assign(4 * seg_size, Node());
         }
 
         void update(const int idx, const VAL_TYPE value) {
