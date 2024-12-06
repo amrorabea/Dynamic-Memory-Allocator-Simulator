@@ -2,22 +2,25 @@
 #define SEGMENT_TREE_H
 #include <bits/stdc++.h>
 
-namespace Segment_Tree {
-
+namespace my_lib {
     class Node {
     public:
         int value;
-        Node() : value(0) {}
-        explicit Node(int _value) : value(_value) {}
+
+        Node() : value(0) {
+        }
+
+        explicit Node(int _value) : value(_value) {
+        }
     };
 
-    template<typename VAL_TYPE = int, VAL_TYPE NEUTRAL_VALUE = 0, class MRG = std::function<VAL_TYPE(const VAL_TYPE &, const VAL_TYPE &)> >
+    template<typename VAL_TYPE = int, class MRG = std::function<VAL_TYPE(const VAL_TYPE &, const VAL_TYPE &)> >
     class Segment_Tree {
     private:
 #define L (2*node+1)
 #define R (2*node+2)
 #define mid ((l+r)/2)
-
+        VAL_TYPE NEUTRAL_VALUE = 0;
         int seg_size;
         std::vector<Node> seg;
         MRG merge;
@@ -41,7 +44,8 @@ namespace Segment_Tree {
         }
 
     public:
-        explicit Segment_Tree(const int _size, const MRG &_mrg) : seg_size(_size), merge(_mrg) {
+        explicit Segment_Tree(const int _size, const VAL_TYPE DEF, const MRG &_mrg) : seg_size(_size), merge(_mrg),
+            NEUTRAL_VALUE(DEF) {
             seg.assign(4 * seg_size, Node(NEUTRAL_VALUE));
         }
 
@@ -53,7 +57,6 @@ namespace Segment_Tree {
             return query(lq, rq, 0, 0, seg_size - 1);
         }
     };
-
-} // namespace Segment_Tree
+} // namespace my_lib
 
 #endif // SEGMENT_TREE_H
