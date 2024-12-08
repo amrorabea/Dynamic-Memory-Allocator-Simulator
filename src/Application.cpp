@@ -191,11 +191,13 @@ void Application::HandleUserCommands() {
     UI::DisplayTitle("Partitions MODE", 25, 5);
     ConsoleHandler::SetCursorPosition(2, 10);
     ConsoleHandler::SetColor(ColorCode::Yellow);
-    cout << "1. First-Fit";
+    cout << "1. Visualize all";
     ConsoleHandler::SetCursorPosition(2, 12);
-    cout << "2. Best-Fit";
+    cout << "2. First-Fit";
+    ConsoleHandler::SetCursorPosition(2, 12);
+    cout << "3. Best-Fit";
     ConsoleHandler::SetCursorPosition(2, 14);
-    cout << "3. Worst-Fit";
+    cout << "4. Worst-Fit";
     ConsoleHandler::SetCursorPosition(2, 16);
     ConsoleHandler::SetColor(ColorCode::White);
     cout << "Enter your choice: ";
@@ -208,7 +210,7 @@ void Application::HandleUserCommands() {
         return;
     }
 
-    if(val == 1 || val == 2 || val == 3){
+    if(val == 1 || val == 2 || val == 3 || val == 4){
         // Placeholder for actual functionality
         // Implement the First-Fit, Best-Fit, Worst-Fit algorithms here
         ConsoleHandler::SetCursorPosition(2, 18);
