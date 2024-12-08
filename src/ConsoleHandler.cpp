@@ -1,5 +1,4 @@
 #include "../include/ConsoleHandler.h"
-#include <iostream>
 
 inline WORD GetColorAttribute(ColorCode foreground, ColorCode background) {
     return static_cast<WORD>((static_cast<int>(background) << 4) | static_cast<int>(foreground));

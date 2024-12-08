@@ -1,6 +1,5 @@
 #include "../include/UI.h"
 #include "../include/ConsoleHandler.h"
-#include "../include/ColorCode.h"
 #include <iostream>
 #include <ctime>
 

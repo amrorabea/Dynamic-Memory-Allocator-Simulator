@@ -128,6 +128,14 @@ void Application::DisplayUpdatePartitionsWindow() {
         ConsoleHandler::SetColor(ColorCode::LightCyan);
         cout << "Current partition's value: " << partitions[i];
         ConsoleHandler::SetCursorPosition(15, 16);
+        cout << "Edit value (Y/n): ";
+        char choice; cin >> choice;
+        if(choice != 'Y' && choice != 'y'){
+            goto choice_is_no;
+        }
+        ConsoleHandler::SetCursorPosition(15, 16);
+        cout << "                             ";
+        ConsoleHandler::SetCursorPosition(15, 16);
         cout << "New value: ";
 
         int newValue;
@@ -145,13 +153,11 @@ void Application::DisplayUpdatePartitionsWindow() {
         }
 
         partitions[i] = newValue;
-        tempFile << newValue << std::endl;
+        choice_is_no:
+        tempFile << partitions[i] << std::endl;
 
-        ConsoleHandler::SetCursorPosition(15, 17);
-        ConsoleHandler::SetColor(ColorCode::LightGreen);
-        cout << "New value: " << newValue;
         // Reset cursor for next input
-        ConsoleHandler::SetCursorPosition(15, 18);
+        ConsoleHandler::SetCursorPosition(15, 16);
         cout << "                             "; // Clear previous input
     }
 
