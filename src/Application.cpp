@@ -124,6 +124,8 @@ void Application::DisplayUpdatePartitionsWindow() {
     }
 
     for (size_t i = 0; i < partitions.size(); ++i) {
+        ConsoleHandler::SetCursorPosition(20, 15);
+        cout << "                          ";
         ConsoleHandler::SetCursorPosition(15, 15);
         ConsoleHandler::SetColor(ColorCode::LightCyan);
         cout << "Current partition's value: " << partitions[i];
