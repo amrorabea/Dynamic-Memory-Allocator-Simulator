@@ -1,8 +1,6 @@
-#include "visualizer.h"
+#include "include/Application.h"
 
-using namespace std;
-
-int main(){
+int main() {
     Application app;
     app.Initialize();
     return 0;
