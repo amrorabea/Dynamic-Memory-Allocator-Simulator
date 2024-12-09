@@ -9,7 +9,7 @@ public:
 
     static bool allocate(Process &process, std::vector<Partition> &partitions);
 
-    bool deallocate(const int &process_id, std::vector<Process> &processes, std::vector<Partition> &partitions);
+    static bool deallocate(const int &process_id, std::vector<Process> &processes, std::vector<Partition> &partitions);
 
     void format(std::vector<Process> &processes, std::vector<Partition> &partitions);
 };

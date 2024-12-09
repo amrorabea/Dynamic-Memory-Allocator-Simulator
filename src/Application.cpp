@@ -6,6 +6,9 @@
 #include "Allocation/FirstFit.h"
 #elif rabea
 #include "../Allocation/FirstFit.h"
+#include "BestFit.h"
+#include "WorstFit.h"
+
 #endif
 #include <iostream>
 #include <fstream>
@@ -35,9 +38,11 @@ void Application::LoadPartitions(const std::string& filename) {
         exit(EXIT_FAILURE);
     }
 
-    int value;
+    int value, i = 1;
     while (file >> value) {
         partitions.push_back(value);
+        Partition newPartition(i++, value);
+        allocatedPartitions.push_back(newPartition);
     }
 
     file.close();
@@ -265,10 +270,35 @@ void Application::processesTable(int mode){
 
     ConsoleHandler::SetCursorPosition(5, 13);
     cout << "Processes ID";
+    int x = 27, y = 12;
+    for (int i = 0; i < allocatedPartitions.size(); ++i) {
+        std::set<int>st = allocatedPartitions[i].process_id;
+        ConsoleHandler::SetCursorPosition(x, y);
+        int cnt = 0, def = x;
+        for(auto el: st){
+            cout << ", "[cnt == 0] << el;
+            ConsoleHandler::SetCursorPosition(x += 2, y);
+            if(cnt == 2) y++, cnt = 0, x = def;
+            cnt++;
+        }
+        x = (i+1) * 10 + 27, y = 12;
+    }
     ConsoleHandler::SetCursorPosition(5, 17);
     cout << "Allocated";
+    x = 30, y = 17;
+    ConsoleHandler::SetCursorPosition(x, y);
+    for (int i = 0; i < allocatedPartitions.size(); ++i) {
+        cout << allocatedPartitions[i].allocated;
+        ConsoleHandler::SetCursorPosition(x += 10, y);
+    }
+    x = 30, y = 21;
     ConsoleHandler::SetCursorPosition(5, 21);
     cout << "Unallocated";
+    ConsoleHandler::SetCursorPosition(x, y);
+    for (int i = 0; i < allocatedPartitions.size(); ++i) {
+        cout << allocatedPartitions[i].space - allocatedPartitions[i].allocated;
+        ConsoleHandler::SetCursorPosition(x += 10, y);
+    }
 
     ConsoleHandler::SetCursorPosition(4, 4);
     cout << "1. Allocate";
@@ -292,6 +322,22 @@ void Application::processesTable(int mode){
         ConsoleHandler::SetCursorPosition(4, 6);
         cout << "Process Space: ";
         cin >> processSpace;
+        Process newProcess(id, processSpace);
+        if(mode == 2){
+            FirstFit::allocate(newProcess, allocatedPartitions);
+            allocatedProcesses.push_back(newProcess);
+            processesTable(2);
+        }
+        else if(mode == 3){
+            BestFit::allocate(newProcess, allocatedPartitions);
+            allocatedProcesses.push_back(newProcess);
+            processesTable(3);
+        }
+        else {
+            WorstFit::allocate(newProcess, allocatedPartitions);
+            allocatedProcesses.push_back(newProcess);
+            processesTable(4);
+        }
     }
     else if(choice == 2){
         ConsoleHandler::SetCursorPosition(4, 8);
@@ -304,7 +350,18 @@ void Application::processesTable(int mode){
         ConsoleHandler::SetCursorPosition(4, 4);
         cout << "Process ID: ";
         cin >> id;
-
+        if(mode == 2){
+            FirstFit::deallocate(id, allocatedProcesses, allocatedPartitions);
+            processesTable(2);
+        }
+        else if(mode == 3){
+            BestFit::deallocate(id, allocatedProcesses, allocatedPartitions);
+            processesTable(3);
+        }
+        else{
+            WorstFit::deallocate(id, allocatedProcesses, allocatedPartitions);
+            processesTable(4);
+        }
     }
     else
         DisplayInvalidChoice(4, 8), processesTable(mode);

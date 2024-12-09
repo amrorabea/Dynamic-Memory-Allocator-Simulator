@@ -16,7 +16,7 @@ A C++ project to simulate and compare memory allocation techniques in operating 
 4. **Graphical Representation:**  
    - Memory blocks are displayed in a visual format (e.g., tables or colored bars) showing their allocation status.
 5. **Deallocation Support:**  
-   - Frees up allocated memory to simulate real-world usage scenarios.
+   - Frees up allocatedPartitions memory to simulate real-world usage scenarios.
 6. **Comparison and Evaluation:**  
    - Automatically evaluates and suggests the most efficient algorithm based on memory usage and fragmentation.
 

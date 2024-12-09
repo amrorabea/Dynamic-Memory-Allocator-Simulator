@@ -3,13 +3,16 @@
 
 #include <vector>
 #include <string>
+#include "AllocationTechnique.h"
 
 class Application {
 public:
     void Initialize();
 
 private:
-    std::vector<int> partitions, allocated;
+    std::vector<int> partitions;
+    std::vector<Partition> allocatedPartitions;
+    std::vector<Process> allocatedProcesses;
     void LoadPartitions(const std::string& filename = "../data/partitions");
     void DisplayFirstWindow();
     void HandleAdminLogin();
