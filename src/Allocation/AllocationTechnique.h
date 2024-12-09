@@ -8,7 +8,6 @@ struct Partition {
     std::set<int> process_id;
     int space{};
     int allocated{};
-    bool is_free = 0;
 
     Partition(const int id, const int sp) : space(sp), id(id) { }
 };
@@ -23,12 +22,12 @@ struct Process {
 
 class AllocationTechnique {
 public:
-    virtual bool allocate(Process &process, std::vector<Partition> &partitions) {};
+    bool allocate(Process &process, std::vector<Partition> &partitions);
 
-    virtual bool deallocate(const int &process_id, std::vector<Process> &processes, std::vector<Partition> &partitions) {};
+    bool deallocate(const int &process_id, std::vector<Process> &processes, std::vector<Partition> &partitions);
 
-    virtual void format(std::vector<Process> &processes, std::vector<Partition> &partitions);
+    void format(std::vector<Process> &processes, std::vector<Partition> &partitions);
 
-    virtual ~AllocationTechnique();
+    ~AllocationTechnique();
 };
 #endif //AllocationTechnique_H

@@ -5,11 +5,11 @@
 
 class FirstFit : public AllocationTechnique {
 public:
-    bool allocate(Process &process, std::vector<Partition> &partitions) override;
+    static bool allocate(Process &process, std::vector<Partition> &partitions);
 
-    bool deallocate(const int &process_id, std::vector<Process> &processes, std::vector<Partition> &partitions) override;
+    bool deallocate(const int &process_id, std::vector<Process> &processes, std::vector<Partition> &partitions);
 
-    void format(std::vector<Process> &processes, std::vector<Partition> &partitions) override;
+    void format(std::vector<Process> &processes, std::vector<Partition> &partitions);
 };
 
 #endif // FIRSTFIT_H

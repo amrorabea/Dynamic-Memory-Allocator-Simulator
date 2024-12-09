@@ -2,6 +2,7 @@
 #include "../include/ConsoleHandler.h"
 #include "../include/UI.h"
 #include "../include/ColorCode.h"
+#include "../Allocation/FirstFit.h"
 #include <iostream>
 #include <fstream>
 #include <conio.h>
@@ -43,8 +44,8 @@ void Application::LoadPartitions(const std::string& filename) {
 void Application::DisplayFirstWindow() {
     while (true) {
         UI::ClearRegion(2, 8, 86, 15); // Clear previous messages
-        ConsoleHandler::SetCursorPosition(4, 10);
         ConsoleHandler::SetColor(ColorCode::Yellow);
+        ConsoleHandler::SetCursorPosition(4, 10);
         cout << "1. Update partition values ";
         ConsoleHandler::SetColor(ColorCode::LightRed);
         cout << "(Admins ONLY)";
@@ -56,7 +57,6 @@ void Application::DisplayFirstWindow() {
         ConsoleHandler::SetCursorPosition(4, 16);
         ConsoleHandler::SetColor(ColorCode::White);
         cout << "Enter your choice: ";
-
         int choice;
         if (!(cin >> choice)) {
             cin.clear();
