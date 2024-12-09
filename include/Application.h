@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <string>
-#include "AllocationTechnique.h"
+#include "Allocation/AllocationTechnique.h"
 
 class Application {
 public:
