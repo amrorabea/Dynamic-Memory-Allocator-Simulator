@@ -1,4 +1,4 @@
-#include "FirstFit.h"
+#include "../../include/Allocation/FirstFit.h"
 
 bool FirstFit::allocate(Process &process, std::vector<Partition> &partitions) {
     for (auto &partition: partitions) {

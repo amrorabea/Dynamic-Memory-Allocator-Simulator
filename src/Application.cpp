@@ -2,14 +2,10 @@
 #include "../include/ConsoleHandler.h"
 #include "../include/UI.h"
 #include "../include/ColorCode.h"
-#ifdef abbas
-#include "Allocation/FirstFit.h"
-#elif rabea
-#include "../Allocation/FirstFit.h"
-#include "BestFit.h"
-#include "WorstFit.h"
+#include "../include/Allocation/FirstFit.h"
+#include "../include/Allocation/WorstFit.h"
+#include "../include/Allocation/BestFit.h"
 
-#endif
 #include <iostream>
 #include <fstream>
 #include <conio.h>
