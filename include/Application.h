@@ -16,11 +16,11 @@ private:
     void DisplayUpdatePartitionsWindow();
     void HandleUserCommands();
     static void ExitApplication();
-    static void DisplayInvalidChoice();
+    static void DisplayInvalidChoice(int x = 4, int y = 18);
     static void DisplayInvalidPassword();
     static std::string GetMaskedInput(int x, int y);
 
-    static void processesTable(int mode);
+    void processesTable(int mode);
 
 };
 
