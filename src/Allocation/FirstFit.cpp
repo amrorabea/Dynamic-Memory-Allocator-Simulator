@@ -2,7 +2,7 @@
 
 bool FirstFit::allocate(Process &process, std::vector<Partition> &partitions) {
     for (auto &partition: partitions) {
-        if (partition.space >= process.space) {
+        if ((partition.space - partition.allocated)>= process.space) {
             partition.process_id.insert(process.id);
             partition.allocated += process.space;
             process.allocated_at = partition.id;
