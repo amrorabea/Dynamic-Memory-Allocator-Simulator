@@ -9,16 +9,19 @@ public:
     void Initialize();
 
 private:
-    std::vector<int> partitions;
+    std::vector<int> partitions, allocated;
     void LoadPartitions(const std::string& filename = "../data/partitions");
     void DisplayFirstWindow();
     void HandleAdminLogin();
     void DisplayUpdatePartitionsWindow();
     void HandleUserCommands();
-    void ExitApplication();
-    void DisplayInvalidChoice();
-    void DisplayInvalidPassword();
-    std::string GetMaskedInput(int x, int y);
+    static void ExitApplication();
+    static void DisplayInvalidChoice();
+    static void DisplayInvalidPassword();
+    static std::string GetMaskedInput(int x, int y);
+
+    static void processesTable(int mode);
+
 };
 
 #endif // APPLICATION_H

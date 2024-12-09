@@ -215,7 +215,22 @@ void Application::HandleUserCommands() {
     if(val == 1 || val == 2 || val == 3 || val == 4){
         ConsoleHandler::SetCursorPosition(4, 18);
         ConsoleHandler::SetColor(ColorCode::Green);
-        cout << "Selected option: " << val << " (Functionality not implemented yet)";
+        switch(val){
+            case 1:
+                cout << "Selected option: " << val << " (Functionality not implemented yet)";
+                break;
+            case 2:
+                processesTable(2);
+                break;
+            case 3:
+                processesTable(3);
+                break;
+            case 4:
+                processesTable(4);
+                break;
+            default:
+                break;
+        }
     }
     else{
         DisplayInvalidChoice();
@@ -224,6 +239,61 @@ void Application::HandleUserCommands() {
     Sleep(2000);
     ConsoleHandler::ClearConsole();
     UI::DrawBoxBorder();
+}
+
+void Application::processesTable(int mode){
+    ConsoleHandler::ClearConsole();
+    UI::DrawBoxBorder();
+    UI::DisplayTime(1, 1);
+    UI::DisplayTitle("Manage Processes", 35, 1);
+    UI::DrawTableBorder(84, 13, 3, 11);
+    UI::DrawHorizontalLine(85, 3, 15);
+    UI::DrawHorizontalLine(85, 3, 19);
+    int vert = 16;
+    for (int i = 0; i < 14; ++i)
+        UI::DrawVerticalLine(14, vert, 11), vert += 5;
+
+    ConsoleHandler::SetCursorPosition(5, 13);
+    cout << "ID";
+    ConsoleHandler::SetCursorPosition(5, 17);
+    cout << "Allocated";
+    ConsoleHandler::SetCursorPosition(5, 21);
+    cout << "Unallocated";
+
+    ConsoleHandler::SetCursorPosition(4, 4);
+    cout << "1. Allocate";
+    ConsoleHandler::SetCursorPosition(4, 6);
+    cout << "2. Deallocate";
+    ConsoleHandler::SetCursorPosition(4, 8);
+    cout << "Choice: ";
+    int choice; cin >> choice;
+    ConsoleHandler::SetCursorPosition(4, 8);
+    cout << "                                   ";
+    ConsoleHandler::SetCursorPosition(4, 4);
+    cout << "                                   ";
+    ConsoleHandler::SetCursorPosition(4, 6);
+    cout << "                                   ";
+
+    if(choice == 1) {
+
+        int id, processSpace;
+        ConsoleHandler::SetCursorPosition(4, 4);
+        cout << "Process ID: ";
+        cin >> id;
+        ConsoleHandler::SetCursorPosition(4, 6);
+        cout << "Process Space: ";
+        cin >> processSpace;
+    }
+    else if(choice == 2){
+        int id;
+        ConsoleHandler::SetCursorPosition(4, 4);
+        cout << "Process ID: ";
+        cin >> id;
+
+    }
+    else
+        DisplayInvalidChoice();
+    // when adding new processes we will start from 17 and add 5 for each new value, MAX PARTITIONS IS 14
 }
 
 void Application::ExitApplication() {

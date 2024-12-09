@@ -9,6 +9,13 @@ public:
     static void DisplayTime(int x, int y);
     static void DisplayTitle(const std::string& title, int x, int y);
     static void ClearRegion(int startX, int startY, int width, int height);
+
+    static void DrawTableBorder(int width, int height, int offsetX, int offsetY);
+
+
+    static void DrawHorizontalLine(int width, int offsetX, int offsetY);
+
+    static void DrawVerticalLine(int height, int offsetX, int offsetY);
 };
 
 #endif // UI_H
