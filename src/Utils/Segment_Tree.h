@@ -9,11 +9,10 @@ namespace my_lib {
     public:
         int min;
         int max;
-        Node() : min(INT_MAX), max(INT_MIN) {}
-        Node(int value) : min(value), max(value) {}
+        Node() : min(INT_MAX), max(INT_MIN) { }
+        Node(int value) : min(value), max(value) { }
     };
 
-    template<typename VAL_TYPE = int>
     class Segment_Tree {
     private:
         int seg_size;
@@ -27,33 +26,29 @@ namespace my_lib {
         }
 
         Node query(int lq, int rq, int node, int l, int r) const {
-            if (lq > r || rq < l)
-                return Node(); // Neutral node with min=INT_MAX and max=INT_MIN
-            if (lq <= l && r <= rq)
-                return seg[node];
+            if (lq > r || rq < l) return Node(); // Neutral node with min=INT_MAX and max=INT_MIN
+            if (lq <= l && r <= rq) return seg[node];
             int mid = l + (r - l) / 2;
             Node left = query(lq, rq, 2 * node + 1, l, mid);
             Node right = query(lq, rq, 2 * node + 2, mid + 1, r);
             return merge(left, right);
         }
 
-        void update(int idx, VAL_TYPE value, int node, int l, int r) {
+        void update(int idx, int value, int node, int l, int r) {
             if (l == r) {
                 seg[node] = Node(value);
                 return;
             }
             int mid = l + (r - l) / 2;
-            if (idx <= mid)
-                update(idx, value, 2 * node + 1, l, mid);
-            else
-                update(idx, value, 2 * node + 2, mid + 1, r);
+            if (idx <= mid) update(idx, value, 2 * node + 1, l, mid);
+            else update(idx, value, 2 * node + 2, mid + 1, r);
             seg[node] = merge(seg[2 * node + 1], seg[2 * node + 2]);
         }
 
     public:
-        explicit Segment_Tree(int size) : seg_size(size), seg(4 * size, Node()) {}
+        explicit Segment_Tree(int size) : seg_size(size), seg(4 * size, Node()) { }
 
-        void build(const std::vector<VAL_TYPE>& data, int node = 0, int l = 0, int r = -1) {
+        void build(const std::vector<int> &data, int node = 0, int l = 0, int r = -1) {
             if (r == -1) r = seg_size - 1;
             if (l == r) {
                 seg[node] = Node(data[l]);
@@ -69,7 +64,7 @@ namespace my_lib {
             return query(lq, rq, 0, 0, seg_size - 1);
         }
 
-        void update(int idx, VAL_TYPE value) {
+        void update(int idx, int value) {
             update(idx, value, 0, 0, seg_size - 1);
         }
     };
