@@ -43,21 +43,24 @@ void Application::LoadPartitions(const std::string& filename) {
 void Application::DisplayFirstWindow() {
     while (true) {
         UI::ClearRegion(2, 8, 86, 15); // Clear previous messages
-        ConsoleHandler::SetCursorPosition(2, 10);
+        ConsoleHandler::SetCursorPosition(4, 10);
         ConsoleHandler::SetColor(ColorCode::Yellow);
-        cout << "1. Update partition values (ADMINISTRATORS ONLY)";
-        ConsoleHandler::SetCursorPosition(2, 12);
+        cout << "1. Update partition values ";
+        ConsoleHandler::SetColor(ColorCode::LightRed);
+        cout << "(Admins ONLY)";
+        ConsoleHandler::SetColor(ColorCode::Yellow);
+        ConsoleHandler::SetCursorPosition(4, 12);
         cout << "2. Use default partitions";
-        ConsoleHandler::SetCursorPosition(2, 14);
+        ConsoleHandler::SetCursorPosition(4, 14);
         cout << "3. Exit";
-        ConsoleHandler::SetCursorPosition(2, 16);
+        ConsoleHandler::SetCursorPosition(4, 16);
         ConsoleHandler::SetColor(ColorCode::White);
         cout << "Enter your choice: ";
 
         int choice;
         if (!(cin >> choice)) {
-            cin.clear(); // Clear error flags
-            cin.ignore(INT_MAX, '\n'); // Discard invalid input
+            cin.clear();
+            cin.ignore(INT_MAX, '\n');
             DisplayInvalidChoice();
             continue;
         }
@@ -80,7 +83,7 @@ void Application::DisplayFirstWindow() {
 }
 
 void Application::HandleAdminLogin() {
-    const std::string adminPassword = "1"; // Consider storing securely
+    const std::string adminPassword = "1";
     std::string inputPassword;
 
     while (true) {
@@ -98,7 +101,6 @@ void Application::HandleAdminLogin() {
         ConsoleHandler::SetCursorPosition(30, 16);
         cout << "PASSWORD: ";
 
-        // Masked password input
         inputPassword = GetMaskedInput(41, 16);
 
         if (inputPassword == adminPassword) {
@@ -123,25 +125,26 @@ void Application::DisplayUpdatePartitionsWindow() {
         exit(EXIT_FAILURE);
     }
 
-    for (size_t i = 0; i < partitions.size(); ++i) {
+    for (int i = 0; i < partitions.size(); ++i) {
         ConsoleHandler::SetCursorPosition(20, 15);
         cout << "                          ";
         ConsoleHandler::SetCursorPosition(15, 15);
         ConsoleHandler::SetColor(ColorCode::LightCyan);
         cout << "Current partition's value: " << partitions[i];
-        ConsoleHandler::SetCursorPosition(15, 16);
+        ConsoleHandler::SetCursorPosition(15, 17);
         cout << "Edit value (Y/n): ";
+        ConsoleHandler::SetColor(ColorCode::White);
         char choice; cin >> choice;
-        if(choice != 'Y' && choice != 'y'){
-            goto choice_is_no;
-        }
-        ConsoleHandler::SetCursorPosition(15, 16);
-        cout << "                             ";
-        ConsoleHandler::SetCursorPosition(15, 16);
+        if (choice != 'Y' && choice != 'y') goto choice_is_no;
+        // ConsoleHandler::SetCursorPosition(15, 17);
+        // cout << "                             ";
+        ConsoleHandler::SetColor(ColorCode::LightCyan);
+        ConsoleHandler::SetCursorPosition(15, 19);
         cout << "New value: ";
-
+        ConsoleHandler::SetColor(ColorCode::White);
         int newValue;
         if (!(cin >> newValue)) {
+            ConsoleHandler::SetColor(ColorCode::LightCyan);
             cin.clear();
             cin.ignore(INT_MAX, '\n');
             ConsoleHandler::SetCursorPosition(15, 17);
@@ -149,7 +152,7 @@ void Application::DisplayUpdatePartitionsWindow() {
             cout << "Invalid input. Please enter an integer value.";
             Sleep(1500);
             ConsoleHandler::SetColor(ColorCode::LightCyan);
-            ConsoleHandler::SetCursorPosition(15, 16);
+            ConsoleHandler::SetCursorPosition(15, 17);
             cout << "New value: ";
             cin >> newValue;
         }
@@ -158,14 +161,14 @@ void Application::DisplayUpdatePartitionsWindow() {
         choice_is_no:
         tempFile << partitions[i] << std::endl;
 
-        // Reset cursor for next input
-        ConsoleHandler::SetCursorPosition(15, 16);
-        cout << "                             "; // Clear previous input
+        ConsoleHandler::SetCursorPosition(15, 17);
+        cout << "                             ";
+        ConsoleHandler::SetCursorPosition(15, 19);
+        cout << "                             ";
     }
 
     tempFile.close();
 
-    // Replace old partitions file with the updated one
     if (remove("../data/partitions") != 0) {
         cerr << "Error deleting the file: partitions" << endl;
         exit(EXIT_FAILURE);
@@ -175,7 +178,6 @@ void Application::DisplayUpdatePartitionsWindow() {
         exit(EXIT_FAILURE);
     }
 
-    // Reload partitions to reflect changes
     partitions.clear();
     LoadPartitions();
 
@@ -189,16 +191,16 @@ void Application::HandleUserCommands() {
     UI::DrawBoxBorder();
     UI::DisplayTime(1, 1);
     UI::DisplayTitle("Partitions MODE", 25, 5);
-    ConsoleHandler::SetCursorPosition(2, 10);
+    ConsoleHandler::SetCursorPosition(4, 10);
     ConsoleHandler::SetColor(ColorCode::Yellow);
     cout << "1. Visualize all";
-    ConsoleHandler::SetCursorPosition(2, 12);
+    ConsoleHandler::SetCursorPosition(4, 12);
     cout << "2. First-Fit";
-    ConsoleHandler::SetCursorPosition(2, 12);
+    ConsoleHandler::SetCursorPosition(4, 14);
     cout << "3. Best-Fit";
-    ConsoleHandler::SetCursorPosition(2, 14);
+    ConsoleHandler::SetCursorPosition(4, 16);
     cout << "4. Worst-Fit";
-    ConsoleHandler::SetCursorPosition(2, 16);
+    ConsoleHandler::SetCursorPosition(4, 18);
     ConsoleHandler::SetColor(ColorCode::White);
     cout << "Enter your choice: ";
 
@@ -211,9 +213,7 @@ void Application::HandleUserCommands() {
     }
 
     if(val == 1 || val == 2 || val == 3 || val == 4){
-        // Placeholder for actual functionality
-        // Implement the First-Fit, Best-Fit, Worst-Fit algorithms here
-        ConsoleHandler::SetCursorPosition(2, 18);
+        ConsoleHandler::SetCursorPosition(4, 18);
         ConsoleHandler::SetColor(ColorCode::Green);
         cout << "Selected option: " << val << " (Functionality not implemented yet)";
     }
@@ -221,7 +221,7 @@ void Application::HandleUserCommands() {
         DisplayInvalidChoice();
     }
 
-    Sleep(2000); // Pause to let the user read the message
+    Sleep(2000);
     ConsoleHandler::ClearConsole();
     UI::DrawBoxBorder();
 }
@@ -237,7 +237,7 @@ void Application::ExitApplication() {
 }
 
 void Application::DisplayInvalidChoice() {
-    ConsoleHandler::SetCursorPosition(2, 18);
+    ConsoleHandler::SetCursorPosition(4, 18);
     ConsoleHandler::SetColor(ColorCode::Red);
     cout << "Invalid choice. Please try again.";
     Sleep(1500); // Wait for 1.5 seconds
@@ -258,14 +258,14 @@ std::string Application::GetMaskedInput(int x, int y) {
     std::string password;
     char ch;
     ConsoleHandler::SetCursorPosition(x, y);
-    while ((ch = _getch()) != '\r') { // Enter key
-        if (ch == '\b') { // Backspace
+    while ((ch = _getch()) != '\r') { // ('\r' == enter key)
+        if (ch == '\b') { // ('\b' == Backspace)
             if (!password.empty()) {
                 password.pop_back();
                 ConsoleHandler::SetCursorPosition(--x, y);
                 cout << ' ' << '\b';
             }
-        } else if (ch != 0 && ch != 224) { // Ignore special keys
+        } else if (ch != 0 && ch != 224) {
             password += ch;
             cout << '*';
             x++;
