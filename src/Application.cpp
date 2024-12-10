@@ -167,9 +167,12 @@ void Application::DisplayUpdatePartitionsWindow() {
             cout << "partitions " << i + 1 << " value = " << partitions[i] << "     ";
         }
         ConsoleHandler::SetCursorPosition(5, 15);
-        ConsoleHandler::SetColor(ColorCode::LightCyan);
+        ConsoleHandler::SetColor(ColorCode::DarkGray);
         cout << "Select partition id 1 : 8 to change it's value or 0 to exit to home page";
+        ConsoleHandler::SetColor(ColorCode::LightCyan);
         ConsoleHandler::SetCursorPosition(20, 17);
+        cout << "New partition id : ";
+        ConsoleHandler::SetColor(ColorCode::White);
         int choice;
         cin >> choice;
         if (!(choice < 0 || choice > 8)) {
