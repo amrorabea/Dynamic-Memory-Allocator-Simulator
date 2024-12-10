@@ -11,7 +11,7 @@ bool BestFit::allocate(Process &process, std::vector<Partition> &partitions) {
     for (int i = 0; i < partitions.size(); ++i) {
         int availability = partitions[i].space - partitions[i].allocated;
         if (availability >= process.space && availability < best_space) {
-            best_space = partitions[i].space;
+            best_space = availability;
             best = i;
         }
     }

@@ -24,3 +24,11 @@ bool FirstFit::deallocate(const int &process_id, std::map<int, Process> &process
     }
     return false;
 }
+
+void format(std::vector<Process> &processes, std::vector<Partition> &partitions) {
+    for (auto &partition: partitions) {
+        partition.allocated = 0;
+        for (auto id: partition.process_id) processes[id].allocated_at = -1;
+        partition.process_id.clear();
+    }
+}
