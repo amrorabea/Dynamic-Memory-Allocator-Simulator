@@ -1,34 +1,35 @@
-#include "../../include/Allocation/WorstFit.h"
+#include <WorstFit.h>
 #define NOT_FOUND (-1)
 #define MIN_SPACE (-1)
 
-WorstFit::WorstFit(const std::vector<Partition> &_partitions) {
+WorstFit::WorstFit(const std::map<int, Partition> &partitions) {
     // .. KEEP
 }
 
-bool WorstFit::allocate(Process &process, std::vector<Partition> &partitions) {
-    int worstIndex = NOT_FOUND, maxAvailable = MIN_SPACE;
+bool WorstFit::allocate(Process &process, std::map<int, Partition> &partitions) {
+    int worse = NOT_FOUND, max_space = MIN_SPACE;
 
-    for (int i = 0; i < partitions.size(); ++i) {
-        int available = partitions[i].space - partitions[i].allocated;
-        if (available >= process.space && available > maxAvailable) {
-            maxAvailable = available;
-            worstIndex = i;
+    for (const auto &[_, partition]: partitions) {
+        int available = partition.space - partition.allocated;
+        if (available >= process.space && available > max_space) {
+            max_space = available;
+            worse = _;
         }
     }
 
-    if (worstIndex != -1) {
-        partitions[worstIndex].allocated += process.space;
-        partitions[worstIndex].process_id.insert(process.id);
-        process.allocated_at = partitions[worstIndex].id;
+    if (worse != NOT_FOUND) {
+        partitions[worse].allocated += process.space;
+        partitions[worse].process_id.insert(process.id);
+        process.allocated_at = partitions[worse].id;
         return true;
     }
     return false;
 }
 
-bool WorstFit::deallocate(const int &process_id, std::map<int, Process> &processes, std::vector<Partition> &partitions) {
+bool WorstFit::deallocate(const int &process_id, std::map<int, Process> &processes,
+                          std::map<int, Partition> &partitions) {
     Process &process = processes[process_id];
-    for (auto &partition: partitions) {
+    for (auto &[_, partition]: partitions) {
         if (partition.process_id.find(process.id) != partition.process_id.end()) {
             partition.process_id.erase(process.id);
             partition.allocated -= process.space;
