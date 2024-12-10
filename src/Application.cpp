@@ -111,18 +111,16 @@ void Application::HandleAdminLogin() {
         ConsoleHandler::ClearConsole();
         UI::DrawBoxBorder();
         UI::DisplayTitle(" ", 55, 8);
-        std::vector<std::string> asciiArt = {
-                "------------------------------------------------------------------------------",
-                "|                              Admin Login page                              |",
-                "|        Enter valid Admin password, or enter \"000\" to back to HomePage      |",
-                "------------------------------------------------------------------------------"
+        std::vector<std::string> title = {
+                "                              Admin Login page                              ",
+                "        Enter valid Admin password, or enter \"000\" to back to HomePage      ",
         };
 
         ConsoleHandler::SetColor(ColorCode::Cyan);
 
-        for (int i = 0; i < asciiArt.size(); i++) {
-            ConsoleHandler::SetCursorPosition(18, 5 + (2 * i));
-            cout << asciiArt[i];
+        for (int i = 0; i < title.size(); i++) {
+            ConsoleHandler::SetCursorPosition(18, 7 + (2 * i));
+            cout << title[i];
         }
 
         ConsoleHandler::SetColor(ColorCode::Yellow);
