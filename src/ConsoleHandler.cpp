@@ -1,4 +1,4 @@
-#include "../include/ConsoleHandler.h"
+#include <ConsoleHandler.h>
 
 inline WORD GetColorAttribute(ColorCode foreground, ColorCode background) {
     return static_cast<WORD>((static_cast<int>(background) << 4) | static_cast<int>(foreground));
@@ -31,7 +31,8 @@ void ConsoleHandler::ClearConsole(ColorCode fontColor, ColorCode backgroundColor
     if (GetConsoleScreenBufferInfo(hConsole, &csbi)) {
         consoleSize = csbi.dwSize.X * csbi.dwSize.Y;
         FillConsoleOutputCharacter(hConsole, ' ', consoleSize, home, &charsWritten);
-        FillConsoleOutputAttribute(hConsole, GetColorAttribute(fontColor, backgroundColor), consoleSize, home, &charsWritten);
+        FillConsoleOutputAttribute(hConsole, GetColorAttribute(fontColor, backgroundColor), consoleSize, home,
+                                   &charsWritten);
         SetConsoleCursorPosition(hConsole, home);
     }
 }

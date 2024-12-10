@@ -1,32 +1,40 @@
-#include "../../include/Allocation/BestFit.h"
+#include <BestFit.h>
 #define NOT_FOUND (-1)
 #define MAX_SPACE (1000'000'000)
 
-BestFit::BestFit(const std::vector<Partition> &_partitions) {
+BestFit::BestFit(const std::map<int, Partition> &_partitions) {
     // .. KEEP
 }
 
-bool BestFit::allocate(Process &process, std::vector<Partition> &partitions) {
+bool BestFit::allocate(Process &process, std::map<int, Partition> &partitions) {
     int best = NOT_FOUND, best_space = MAX_SPACE;
-    for (int i = 0; i < partitions.size(); ++i) {
-        int availability = partitions[i].space - partitions[i].allocated;
-        if (availability >= process.space && availability < best_space) {
-            best_space = availability;
-            best = i;
+
+    for (const auto &[key, partition]: partitions) {
+        int available = partition.space - partition.allocated;
+        if (available >= process.space && available < best_space) {
+            best_space = available;
+            best = key;
         }
     }
+
     if (best != NOT_FOUND) {
-        partitions[best].allocated += process.space;
-        partitions[best].process_id.insert(process.id);
-        process.allocated_at = best;
-        return true;
+        auto it = partitions.find(best);
+        if (it != partitions.end()) {
+            auto [_, partition] = *it;
+            partition.allocated += process.space;
+            partition.process_id.insert(process.id);
+            process.allocated_at = partition.id;
+            return true;
+        }
     }
     return false;
 }
 
-bool BestFit::deallocate(const int &process_id, std::map<int, Process> &processes, std::vector<Partition> &partitions) {
+
+bool BestFit::deallocate(const int &process_id, std::map<int, Process> &processes,
+                         std::map<int, Partition> &partitions) {
     Process &process = processes[process_id];
-    for (auto &partition: partitions) {
+    for (auto &[_, partition]: partitions) {
         if (partition.process_id.find(process.id) != partition.process_id.end()) {
             partition.process_id.erase(process.id);
             partition.allocated -= process.space;
@@ -36,12 +44,4 @@ bool BestFit::deallocate(const int &process_id, std::map<int, Process> &processe
         }
     }
     return false;
-}
-
-void format(std::vector<Process> &processes, std::vector<Partition> &partitions) {
-    for (auto &partition: partitions) {
-        partition.allocated = 0;
-        for (auto id: partition.process_id) processes[id].allocated_at = -1;
-        partition.process_id.clear();
-    }
 }

@@ -1,7 +1,6 @@
 #ifndef AllocationTechnique_H
 #define AllocationTechnique_H
 #include <set>
-#include <vector>
 #include <map>
 
 struct Partition {
@@ -10,8 +9,13 @@ struct Partition {
     int space{};
     int allocated{};
 
-    Partition(const int id, const int sp) : space(sp), id(id) { }
+    Partition() : id(0) {
+    }
+
+    Partition(const int id, const int sp) : id(id), space(sp), allocated(0) {
+    }
 };
+
 
 struct Process {
     int id{};
@@ -19,18 +23,18 @@ struct Process {
     int unallocated{};
     int allocated_at{};
 
-    Process() {};
+    Process() {
+    }
 
-    Process(const int id, const int sp) : id(id), space(sp), unallocated(space), allocated_at(-1) { }
+    Process(const int id, const int sp) : id(id), space(sp), unallocated(space), allocated_at(-1) {
+    }
 };
 
 class AllocationTechnique {
 public:
-    bool allocate(Process &process, std::vector<Partition> &partitions);
+    bool allocate(Process &process, std::map<int, Partition> &partitions);
 
-    bool deallocate(const int &process_id, std::map<int, Process> &processes, std::vector<Partition> &partitions);
-
-    void format(std::vector<Process> &processes, std::vector<Partition> &partitions);
+    bool deallocate(const int &process_id, std::map<int, Process> &processes, std::map<int, Partition> &partitions);
 
     ~AllocationTechnique();
 };
