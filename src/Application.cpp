@@ -159,47 +159,64 @@ void Application::DisplayUpdatePartitionsWindow() {
         exit(EXIT_FAILURE);
     }
 
-    for (int i = 0; i < partitions.size(); ++i) {
-        ConsoleHandler::SetCursorPosition(20, 15);
-        cout << "                          ";
-        ConsoleHandler::SetCursorPosition(15, 15);
-        ConsoleHandler::SetColor(ColorCode::LightCyan);
-        cout << "Current partition's value: " << partitions[i];
-        ConsoleHandler::SetCursorPosition(15, 17);
-        cout << "Edit value (Y/n): ";
-        ConsoleHandler::SetColor(ColorCode::White);
-        char choice;
-        cin >> choice;
-        if (choice != 'Y' && choice != 'y') goto choice_is_no;
-        // ConsoleHandler::SetCursorPosition(15, 17);
-        // cout << "                             ";
-        ConsoleHandler::SetColor(ColorCode::LightCyan);
-        ConsoleHandler::SetCursorPosition(15, 19);
-        cout << "New value: ";
-        ConsoleHandler::SetColor(ColorCode::White);
-        int newValue;
-        if (!(cin >> newValue)) {
-            ConsoleHandler::SetColor(ColorCode::LightCyan);
-            cin.clear();
-            cin.ignore(INT_MAX, '\n');
-            ConsoleHandler::SetCursorPosition(15, 17);
-            ConsoleHandler::SetColor(ColorCode::Red);
-            cout << "Invalid input. Please enter an integer value.";
-            Sleep(1500);
-            ConsoleHandler::SetColor(ColorCode::LightCyan);
-            ConsoleHandler::SetCursorPosition(15, 17);
-            cout << "New value: ";
-            cin >> newValue;
+
+    while (true) {
+        for (int i = 0; i < partitions.size(); i++) {
+            ConsoleHandler::SetCursorPosition(90, 7 + i * 2);
+            ConsoleHandler::SetColor(ColorCode::LightRed);
+            cout << "partitions " << i + 1 << " value = " << partitions[i] << "     ";
         }
+        ConsoleHandler::SetCursorPosition(5, 15);
+        ConsoleHandler::SetColor(ColorCode::LightCyan);
+        cout << "Select partition id 1 : 8 to change it's value or 0 to exit to home page";
+        ConsoleHandler::SetCursorPosition(20, 17);
+        int choice;
+        cin >> choice;
+        if (!(choice < 0 || choice > 8)) {
+            if (choice == 0) {
+                break;
+            }
+            ConsoleHandler::SetColor(ColorCode::LightCyan);
+            ConsoleHandler::SetCursorPosition(20, 20);
+            cout << "New value: ";
+            ConsoleHandler::SetColor(ColorCode::White);
+            int newValue;
+            if (!(cin >> newValue)) {
+                ConsoleHandler::SetColor(ColorCode::LightCyan);
+                cin.clear();
+                cin.ignore(INT_MAX, '\n');
+                ConsoleHandler::SetCursorPosition(20, 25);
+                ConsoleHandler::SetColor(ColorCode::Red);
+                cout << "Invalid input. Please enter an integer value.";
+                Sleep(1500);
 
-        partitions[i] = newValue;
-        choice_is_no:
-        tempFile << partitions[i] << std::endl;
+                ConsoleHandler::SetColor(ColorCode::LightCyan);
 
-        ConsoleHandler::SetCursorPosition(15, 17);
-        cout << "                             ";
-        ConsoleHandler::SetCursorPosition(15, 19);
-        cout << "                             ";
+                ConsoleHandler::SetCursorPosition(20, 20);
+                cout << "                                                 ";
+                ConsoleHandler::SetCursorPosition(20, 20);
+                cout << "New value: ";
+                cin >> newValue;
+            }
+            partitions[choice - 1] = newValue;
+        } else {
+            ConsoleHandler::SetCursorPosition(20, 25);
+            ConsoleHandler::SetColor(ColorCode::Red);
+            cout << "Invalid input. Please enter an integer value between 0 and 8 Exclusive.";
+            Sleep(1500);
+
+        }
+        // clear window after get value
+        ConsoleHandler::SetCursorPosition(20, 25);
+        cout << "                                                                              ";
+        ConsoleHandler::SetCursorPosition(20, 17);
+        cout << "                                                 ";
+        ConsoleHandler::SetCursorPosition(20, 20);
+        cout << "                                                 ";
+    }
+
+    for (int partition: partitions) {
+        tempFile << partition << std::endl;
     }
 
     tempFile.close();
