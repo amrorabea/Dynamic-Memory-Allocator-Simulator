@@ -7,28 +7,31 @@ WorstFit::WorstFit(const std::vector<Partition> &_partitions) {
 }
 
 bool WorstFit::allocate(Process &process, std::vector<Partition> &partitions) {
-    int best = NOT_FOUND, worse_space = MIN_SPACE;
+    int worstIndex = NOT_FOUND, maxAvailable = MIN_SPACE;
+
     for (int i = 0; i < partitions.size(); ++i) {
-        int availability = partitions[i].space - partitions[i].allocated;
-        if (availability >= process.space && availability > worse_space) {
-            worse_space = partitions[i].space;
-            best = i;
+        int available = partitions[i].space - partitions[i].allocated;
+        if (available >= process.space && available > maxAvailable) {
+            maxAvailable = available;
+            worstIndex = i;
         }
     }
-    if (best != NOT_FOUND) {
-        partitions[best].allocated -= process.space;
-        partitions[best].process_id.insert(process.id);
-        process.allocated_at = best;
+
+    if (worstIndex != -1) {
+        partitions[worstIndex].allocated += process.space;
+        partitions[worstIndex].process_id.insert(process.id);
+        process.allocated_at = partitions[worstIndex].id;
         return true;
     }
     return false;
 }
+
 bool WorstFit::deallocate(const int &process_id, std::map<int, Process> &processes, std::vector<Partition> &partitions) {
     Process &process = processes[process_id];
     for (auto &partition: partitions) {
         if (partition.process_id.find(process.id) != partition.process_id.end()) {
             partition.process_id.erase(process.id);
-            partition.allocated += process.space;
+            partition.allocated -= process.space;
             process.allocated_at = -1;
             return true; // rmv success
         }

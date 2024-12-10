@@ -208,6 +208,9 @@ void Application::HandleUserCommands() {
     ConsoleHandler::SetCursorPosition(4, 16);
     cout << "4. Worst-Fit";
     ConsoleHandler::SetCursorPosition(4, 18);
+    cout << "5. Back";
+
+    ConsoleHandler::SetCursorPosition(4, 20);
     ConsoleHandler::SetColor(ColorCode::White);
     cout << "Enter your choice: ";
 
@@ -220,7 +223,7 @@ void Application::HandleUserCommands() {
     }
 
     if(val == 1 || val == 2 || val == 3 || val == 4){
-        ConsoleHandler::SetCursorPosition(4, 18);
+        ConsoleHandler::SetCursorPosition(4, 20);
         ConsoleHandler::SetColor(ColorCode::Green);
         switch(val){
             case 1:
@@ -238,24 +241,32 @@ void Application::HandleUserCommands() {
             default:
                 break;
         }
-    }
-    else{
+    } else if (val == 5) {
+        // Back to First Window
+        ConsoleHandler::ClearConsole();
+        UI::DrawBoxBorder();
+        DisplayFirstWindow();
+        return;
+    } else {
         DisplayInvalidChoice();
         HandleUserCommands();
     }
+
 
     Sleep(2000);
     ConsoleHandler::ClearConsole();
     UI::DrawBoxBorder();
 }
 
-void Application::processesTable(int mode){
+void Application::processesTable(int mode) {
     ConsoleHandler::ClearConsole();
     UI::DrawBoxBorder();
     UI::DisplayTime(1, 1);
+
     std::string titles[] = {"First Fit Technique", "Best Fit Technique", "Worst Fit Technique"};
     std::string title = "Manage Processes : " + titles[mode - 2];
     UI::DisplayTitle(title, 40, 1);
+
     UI::DrawTableBorder(114, 13, 3, 11);
     UI::DrawHorizontalLine(115, 3, 15);
     UI::DrawHorizontalLine(115, 3, 19);
@@ -273,13 +284,13 @@ void Application::processesTable(int mode){
         std::set<int>st = allocatedPartitions[i].process_id;
         ConsoleHandler::SetCursorPosition(x, y);
         int cnt = 0, def = x;
-        for(auto el: st){
+        for (auto el: st) {
             cout << ", "[cnt == 0] << el;
             ConsoleHandler::SetCursorPosition(x += 2, y);
-            if(cnt == 2) y++, cnt = 0, x = def;
+            if (cnt == 2) y++, cnt = 0, x = def;
             cnt++;
         }
-        x = (i+1) * 10 + 27, y = 12;
+        x = (i + 1) * 10 + 27, y = 12;
     }
     ConsoleHandler::SetCursorPosition(5, 17);
     cout << "Allocated";
@@ -298,11 +309,16 @@ void Application::processesTable(int mode){
         ConsoleHandler::SetCursorPosition(x += 10, y);
     }
 
+
+    ConsoleHandler::SetColor(ColorCode::Yellow);
+
     ConsoleHandler::SetCursorPosition(4, 4);
     cout << "1. Allocate";
     ConsoleHandler::SetCursorPosition(4, 6);
     cout << "2. Deallocate";
     ConsoleHandler::SetCursorPosition(4, 8);
+    cout << "3. Back";
+    ConsoleHandler::SetCursorPosition(4, 10);
     cout << "Choice: ";
     int choice; cin >> choice;
 
@@ -312,6 +328,10 @@ void Application::processesTable(int mode){
         ConsoleHandler::SetCursorPosition(4, 4);
         cout << "                                   ";
         ConsoleHandler::SetCursorPosition(4, 6);
+        cout << "                                   ";
+        ConsoleHandler::SetCursorPosition(4, 8);
+        cout << "                                   ";
+        ConsoleHandler::SetCursorPosition(4, 10);
         cout << "                                   ";
         int id, processSpace;
         ConsoleHandler::SetCursorPosition(4, 4);
@@ -344,10 +364,16 @@ void Application::processesTable(int mode){
         cout << "                                   ";
         ConsoleHandler::SetCursorPosition(4, 6);
         cout << "                                   ";
+        ConsoleHandler::SetCursorPosition(4, 8);
+        cout << "                                   ";
+        ConsoleHandler::SetCursorPosition(4, 10);
+        cout << "                                   ";
         int id;
         ConsoleHandler::SetCursorPosition(4, 4);
-        cout << "Process ID: ";
-        cin >> id;
+        cout << "Process ID: ";cin >> id;
+        // std::string temp; cin >> temp;
+        // if (temp.size() > 3) DisplayInvalidChoice(4, 10), processesTable(mode);
+        // id = stoi(temp);
         if(mode == 2){
             FirstFit::deallocate(id, allocatedProcesses, allocatedPartitions);
             processesTable(2);
@@ -361,8 +387,13 @@ void Application::processesTable(int mode){
             processesTable(4);
         }
     }
-    else
-        DisplayInvalidChoice(4, 8), processesTable(mode);
+    else if(choice == 3) {
+        ConsoleHandler::ClearConsole();
+        UI::DrawBoxBorder();
+        DisplayFirstWindow();
+    }
+    else DisplayInvalidChoice(4, 10), processesTable(mode);
+        //
     // when adding new processes we will start from 17 and add 5 for each new value, MAX PARTITIONS IS 14
 }
 
@@ -383,6 +414,14 @@ void Application::DisplayInvalidChoice(int x, int y) {
     Sleep(1500); // Wait for 1.5 seconds
     ConsoleHandler::ClearConsole();
     UI::DrawBoxBorder();
+}
+
+void Application::DisplaySuccessMessage(const std::string& message, int x, int y) {
+    ConsoleHandler::SetCursorPosition(x, y);
+    ConsoleHandler::SetColor(ColorCode::Green);
+    cout << message;
+    Sleep(1500); // Display for 1.5 seconds
+    ConsoleHandler::SetColor(ColorCode::White);
 }
 
 void Application::DisplayInvalidPassword() {
