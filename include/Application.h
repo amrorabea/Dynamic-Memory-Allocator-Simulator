@@ -21,6 +21,9 @@ private:
     void HandleUserCommands();
     static void ExitApplication();
     static void DisplayInvalidChoice(int x = 4, int y = 18);
+
+    static void DisplaySuccessMessage(const std::string &message, int x, int y);
+
     static void DisplayInvalidPassword();
     static std::string GetMaskedInput(int x, int y);
 
