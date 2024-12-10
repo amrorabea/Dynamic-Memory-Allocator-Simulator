@@ -110,11 +110,20 @@ void Application::HandleAdminLogin() {
     while (true) {
         ConsoleHandler::ClearConsole();
         UI::DrawBoxBorder();
-        UI::DisplayTitle("Admin Login", 31, 12);
+        UI::DisplayTitle(" ", 55, 8);
+        std::vector<std::string> asciiArt = {
+                "------------------------------------------------------------------------------",
+                "|                              Admin Login page                              |",
+                "|        Enter valid Admin password, or enter \"000\" to back to HomePage      |",
+                "------------------------------------------------------------------------------"
+        };
 
-        ConsoleHandler::SetColor(ColorCode::LightGreen);
-        ConsoleHandler::SetCursorPosition(25, 13);
-        cout << "Enter valid Admin password.";
+        ConsoleHandler::SetColor(ColorCode::Cyan);
+
+        for (int i = 0; i < asciiArt.size(); i++) {
+            ConsoleHandler::SetCursorPosition(18, 5 + (2 * i));
+            cout << asciiArt[i];
+        }
 
         ConsoleHandler::SetColor(ColorCode::Yellow);
         ConsoleHandler::SetCursorPosition(30, 15);
@@ -123,8 +132,13 @@ void Application::HandleAdminLogin() {
         cout << "PASSWORD: ";
 
         inputPassword = GetMaskedInput(41, 16);
-
-        if (inputPassword == adminPassword) {
+        if (inputPassword == "000") {
+            // Back to First Window
+            ConsoleHandler::ClearConsole();
+            UI::DrawBoxBorder();
+            DisplayFirstWindow();
+            return;
+        } else if (inputPassword == adminPassword) {
             ConsoleHandler::ClearConsole();
             UI::DrawBoxBorder();
             DisplayUpdatePartitionsWindow();
@@ -213,7 +227,7 @@ void Application::HandleUserCommands() {
     ConsoleHandler::ClearConsole();
     UI::DrawBoxBorder();
     UI::DisplayTime(1, 1);
-    UI::DisplayTitle("Partitions MODE", 25, 5);
+    UI::DisplayTitle("Partitions MODE", 55, 5);
     ConsoleHandler::SetCursorPosition(4, 10);
     ConsoleHandler::SetColor(ColorCode::Yellow);
     cout << "1. Visualize all";
