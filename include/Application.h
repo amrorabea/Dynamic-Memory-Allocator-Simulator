@@ -20,13 +20,10 @@ private:
     void DisplayUpdatePartitionsWindow();
     void HandleUserCommands();
     static void ExitApplication();
-    static void DisplayInvalidChoice(int x = 4, int y = 18);
-
+    static void DisplayInvalidInput(int x = 4, int y = 18, std::string msg = "Invalid choice. Please try again.");
     static void DisplaySuccessMessage(const std::string &message, int x, int y);
-
     static void DisplayInvalidPassword();
     static std::string GetMaskedInput(int x, int y);
-
     void processesTable(int mode);
 
 };

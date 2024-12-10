@@ -66,7 +66,7 @@ void Application::DisplayFirstWindow() {
         if (!(cin >> choice)) {
             cin.clear();
             cin.ignore(INT_MAX, '\n');
-            DisplayInvalidChoice();
+            DisplayInvalidInput();
             continue;
         }
 
@@ -81,7 +81,7 @@ void Application::DisplayFirstWindow() {
                 ExitApplication();
                 return;
             default:
-                DisplayInvalidChoice();
+                DisplayInvalidInput();
                 DisplayFirstWindow();
                 break;
         }
@@ -218,7 +218,7 @@ void Application::HandleUserCommands() {
     if (!(cin >> val)) {
         cin.clear();
         cin.ignore(INT_MAX, '\n');
-        DisplayInvalidChoice();
+        DisplayInvalidInput();
         HandleUserCommands();
     }
 
@@ -248,7 +248,7 @@ void Application::HandleUserCommands() {
         DisplayFirstWindow();
         return;
     } else {
-        DisplayInvalidChoice();
+        DisplayInvalidInput();
         HandleUserCommands();
     }
 
@@ -309,7 +309,6 @@ void Application::processesTable(int mode) {
         ConsoleHandler::SetCursorPosition(x += 10, y);
     }
 
-
     ConsoleHandler::SetColor(ColorCode::Yellow);
 
     ConsoleHandler::SetCursorPosition(4, 4);
@@ -332,11 +331,14 @@ void Application::processesTable(int mode) {
         ConsoleHandler::SetCursorPosition(4, 8);
         cout << "                                   ";
         ConsoleHandler::SetCursorPosition(4, 10);
-        cout << "                                   ";
+        cout << "               ";
         int id, processSpace;
         ConsoleHandler::SetCursorPosition(4, 4);
         cout << "Process ID: ";
-        cin >> id;
+        std::string tmp; cin >> tmp;
+        if (tmp.size() > 3) {DisplayInvalidInput(40, 26, "Large ID size, reenter another small id"), processesTable(mode);}
+        // cin >> id;
+        id = std::stoi(tmp);
         ConsoleHandler::SetCursorPosition(4, 6);
         cout << "Process Space: ";
         cin >> processSpace;
@@ -372,7 +374,7 @@ void Application::processesTable(int mode) {
         ConsoleHandler::SetCursorPosition(4, 4);
         cout << "Process ID: ";cin >> id;
         // std::string temp; cin >> temp;
-        // if (temp.size() > 3) DisplayInvalidChoice(4, 10), processesTable(mode);
+        // if (temp.size() > 3) DisplayInvalidInput(4, 10), processesTable(mode);
         // id = stoi(temp);
         if(mode == 2){
             FirstFit::deallocate(id, allocatedProcesses, allocatedPartitions);
@@ -392,7 +394,7 @@ void Application::processesTable(int mode) {
         UI::DrawBoxBorder();
         DisplayFirstWindow();
     }
-    else DisplayInvalidChoice(4, 10), processesTable(mode);
+    else DisplayInvalidInput(4, 10), processesTable(mode);
         //
     // when adding new processes we will start from 17 and add 5 for each new value, MAX PARTITIONS IS 14
 }
@@ -407,10 +409,10 @@ void Application::ExitApplication() {
     exit(EXIT_SUCCESS);
 }
 
-void Application::DisplayInvalidChoice(int x, int y) {
+void Application::DisplayInvalidInput(int x, int y, std::string msg) {
     ConsoleHandler::SetCursorPosition(x, y);
     ConsoleHandler::SetColor(ColorCode::Red);
-    cout << "Invalid choice. Please try again.";
+    cout << msg;
     Sleep(1500); // Wait for 1.5 seconds
     ConsoleHandler::ClearConsole();
     UI::DrawBoxBorder();
