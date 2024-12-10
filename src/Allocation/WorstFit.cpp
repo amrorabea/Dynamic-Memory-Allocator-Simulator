@@ -9,20 +9,21 @@ WorstFit::WorstFit(const std::vector<Partition> &_partitions) {
 bool WorstFit::allocate(Process &process, std::vector<Partition> &partitions) {
     int best = NOT_FOUND, worse_space = MIN_SPACE;
     for (int i = 0; i < partitions.size(); ++i) {
-        if ((partitions[i].space - partitions[i].allocated) >= process.space && partitions[i].space >= worse_space) {
+        int availability = partitions[i].space - partitions[i].allocated;
+        if (availability >= process.space && availability > worse_space) {
             worse_space = partitions[i].space;
             best = i;
         }
     }
     if (best != NOT_FOUND) {
-        partitions[best].allocated += process.space;
+        partitions[best].allocated -= process.space;
         partitions[best].process_id.insert(process.id);
         process.allocated_at = best;
         return true;
     }
     return false;
 }
-bool WorstFit::deallocate(const int &process_id, std::vector<Process> &processes, std::vector<Partition> &partitions) {
+bool WorstFit::deallocate(const int &process_id, std::map<int, Process> &processes, std::vector<Partition> &partitions) {
     Process &process = processes[process_id];
     for (auto &partition: partitions) {
         if (partition.process_id.find(process.id) != partition.process_id.end()) {

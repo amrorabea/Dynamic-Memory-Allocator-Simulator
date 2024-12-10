@@ -253,7 +253,9 @@ void Application::processesTable(int mode){
     ConsoleHandler::ClearConsole();
     UI::DrawBoxBorder();
     UI::DisplayTime(1, 1);
-    UI::DisplayTitle("Manage Processes", 35, 1);
+    std::string titles[] = {"First Fit Technique", "Best Fit Technique", "Worst Fit Technique"};
+    std::string title = "Manage Processes : " + titles[mode - 2];
+    UI::DisplayTitle(title, 40, 1);
     UI::DrawTableBorder(114, 13, 3, 11);
     UI::DrawHorizontalLine(115, 3, 15);
     UI::DrawHorizontalLine(115, 3, 19);
@@ -321,17 +323,17 @@ void Application::processesTable(int mode){
         Process newProcess(id, processSpace);
         if(mode == 2){
             FirstFit::allocate(newProcess, allocatedPartitions);
-            allocatedProcesses.push_back(newProcess);
+            allocatedProcesses[id] = newProcess;
             processesTable(2);
         }
         else if(mode == 3){
             BestFit::allocate(newProcess, allocatedPartitions);
-            allocatedProcesses.push_back(newProcess);
+            allocatedProcesses[id] = newProcess;
             processesTable(3);
         }
         else {
             WorstFit::allocate(newProcess, allocatedPartitions);
-            allocatedProcesses.push_back(newProcess);
+            allocatedProcesses[id] = newProcess;
             processesTable(4);
         }
     }

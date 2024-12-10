@@ -12,12 +12,12 @@ bool FirstFit::allocate(Process &process, std::vector<Partition> &partitions) {
     return false;
 }
 
-bool FirstFit::deallocate(const int &process_id, std::vector<Process> &processes, std::vector<Partition> &partitions) {
+bool FirstFit::deallocate(const int &process_id, std::map<int, Process> &processes, std::vector<Partition> &partitions) {
     Process &process = processes[process_id];
     for (auto &partition: partitions) {
         if (partition.process_id.find(process.id) != partition.process_id.end()) {
             partition.process_id.erase(process.id);
-            partition.allocated += process.space;
+            partition.allocated -= process.space;
             process.allocated_at = -1;
             return true; // rmv success
         }

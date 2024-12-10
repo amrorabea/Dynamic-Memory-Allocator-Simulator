@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include <map>
 #include "Allocation/AllocationTechnique.h"
 
 class Application {
@@ -12,7 +13,7 @@ public:
 private:
     std::vector<int> partitions;
     std::vector<Partition> allocatedPartitions;
-    std::vector<Process> allocatedProcesses;
+    std::map<int, Process> allocatedProcesses;
     void LoadPartitions(const std::string& filename = "../data/partitions");
     void DisplayFirstWindow();
     void HandleAdminLogin();
