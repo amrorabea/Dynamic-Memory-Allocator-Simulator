@@ -1,5 +1,5 @@
-#include "../include/UI.h"
-#include "../include/ConsoleHandler.h"
+#include <UI.h>
+#include <ConsoleHandler.h>
 #include <iostream>
 #include <ctime>
 

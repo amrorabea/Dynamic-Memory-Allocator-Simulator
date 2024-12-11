@@ -60,18 +60,10 @@ A C++ project to simulate and compare memory allocation techniques in operating 
    
    set(CMAKE_CXX_STANDARD 23)
    
-   #include_directories(include)
-   #include_directories(include/Allocation)
+   include_directories(include)
+   include_directories(include/Allocation)
    
    add_executable(Dynamic_Memory_Allocator_Simulator
-   include/Allocation/AllocationTechnique.h
-   include/Allocation/BestFit.h
-   include/Allocation/FirstFit.h
-   include/Allocation/WorstFit.h
-   include/Application.h
-   include/ColorCode.h
-   include/ConsoleHandler.h
-   include/UI.h
    src/Allocation/BestFit.cpp
    src/Allocation/FirstFit.cpp
    src/Allocation/WorstFit.cpp

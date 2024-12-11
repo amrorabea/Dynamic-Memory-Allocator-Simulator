@@ -1,7 +1,7 @@
 #ifndef WORSTFIT_H
 #define WORSTFIT_H
 
-#include "AllocationTechnique.h"
+#include <AllocationTechnique.h>
 
 class WorstFit : public AllocationTechnique {
 public:

@@ -3,13 +3,13 @@
 #include <conio.h>
 #include <cstdlib>
 #include <set>
-#include "../include/Application.h"
-#include "../include/ConsoleHandler.h"
-#include "../include/UI.h"
-#include "../include/Allocation/AllocationTechnique.h"
-#include "../include/Allocation/FirstFit.h"
-#include "../include/Allocation/BestFit.h"
-#include "../include/Allocation/WorstFit.h"
+#include <Application.h>
+#include <ConsoleHandler.h>
+#include <UI.h>
+#include <AllocationTechnique.h>
+#include <FirstFit.h>
+#include <BestFit.h>
+#include <WorstFit.h>
 
 using std::cin;
 using std::cout;

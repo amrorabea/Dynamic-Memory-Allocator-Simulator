@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 #include <map>
-#include "Allocation/AllocationTechnique.h"
+#include <AllocationTechnique.h>
 
 class Application {
 public:
