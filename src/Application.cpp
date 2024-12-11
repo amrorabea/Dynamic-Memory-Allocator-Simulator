@@ -467,7 +467,7 @@ void Application::FirstFit() {
     } else if (choice == 3) {
         ConsoleHandler::ClearConsole();
         UI::DrawBoxBorder();
-        DisplayFirstWindow();
+        HandleUserCommands();
     } else DisplayInvalidInput(4, 10), FirstFit();
 }
 
@@ -622,7 +622,7 @@ void Application::BestFit() {
     } else if (choice == 3) {
         ConsoleHandler::ClearConsole();
         UI::DrawBoxBorder();
-        DisplayFirstWindow();
+        HandleUserCommands();
     } else DisplayInvalidInput(4, 10), BestFit();
 }
 
@@ -777,7 +777,7 @@ void Application::WorstFit() {
     } else if (choice == 3) {
         ConsoleHandler::ClearConsole();
         UI::DrawBoxBorder();
-        DisplayFirstWindow();
+        HandleUserCommands();
     } else DisplayInvalidInput(4, 10), WorstFit();
 }
 
@@ -927,7 +927,7 @@ void Application::visualizeAll() {
         }
         id = std::stoi(tmp);
         if (bestProcesses.find(id) != bestProcesses.end() &&
-            bestProcesses.find(id) != bestProcesses.end() &&
+            firstProcesses.find(id) != firstProcesses.end() &&
             worstProcesses.find(id) != worstProcesses.end()) {
             DisplayInvalidInput(4, 6, "The id is already taken"),
                     visualizeAll();
@@ -938,8 +938,8 @@ void Application::visualizeAll() {
 
         Process newProcess(id, processSpace);
 
-        FirstFit::allocate(newProcess, bestPartitions);
-        bestProcesses[id] = newProcess;
+        FirstFit::allocate(newProcess, firstPartitions);
+        firstProcesses[id] = newProcess;
 
         BestFit::allocate(newProcess, bestPartitions);
         bestProcesses[id] = newProcess;
@@ -979,10 +979,8 @@ void Application::visualizeAll() {
         visualizeAll();
     } else if (choice == 3) {
         ConsoleHandler::ClearConsole();
-
         UI::DrawBoxBorder();
-
-        DisplayFirstWindow();
+        HandleUserCommands();
     } else
         DisplayInvalidInput(4, 10),
                 visualizeAll();
