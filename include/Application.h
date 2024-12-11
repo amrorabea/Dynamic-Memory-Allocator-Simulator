@@ -15,6 +15,14 @@ private:
     std::map<int, Partition> allocatedPartitions;
     std::map<int, Process> allocatedProcesses;
 
+    std::map<int, Partition> bestPartitions;
+    std::map<int, Partition> firstPartitions;
+    std::map<int, Partition> worstPartitions;
+
+    std::map<int, Process> firstProcesses;
+    std::map<int, Process> bestProcesses;
+    std::map<int, Process> worstProcesses;
+
     void LoadPartitions(const std::string &filename = "../data/partitions");
 
     void DisplayFirstWindow();
