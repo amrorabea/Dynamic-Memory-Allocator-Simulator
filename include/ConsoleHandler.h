@@ -2,7 +2,7 @@
 #define CONSOLEHANDLER_H
 
 #include <windows.h>
-#include "ColorCode.h"
+#include <ColorCode.h>
 
 class ConsoleHandler {
 public:

@@ -37,6 +37,8 @@ private:
     static std::string GetMaskedInput(int x, int y);
 
     void processesTable(int mode);
+
+    void visualizeAll();
 };
 
 #endif // APPLICATION_H
