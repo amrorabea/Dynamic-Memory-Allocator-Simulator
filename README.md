@@ -53,12 +53,34 @@ A C++ project to simulate and compare memory allocation techniques in operating 
    ```bash
    git clone https://github.com/yourusername/Dynamic-Memory-Allocator-Simulator.git
    ```
-2. Navigate to the project directory and compile:  
+2. Customize CMAKE file 
+    ```cmake
+   cmake_minimum_required(VERSION 3.30)
+   project(Dynamic_Memory_Allocator_Simulator)
+   
+   set(CMAKE_CXX_STANDARD 23)
+   
+   include_directories(include)
+   include_directories(include/Allocation)
+   
+   add_executable(Dynamic_Memory_Allocator_Simulator
+      main.cpp
+      src/UI.cpp
+      src/Application.cpp
+      src/ConsoleHandler.cpp
+      src/Allocation/FirstFit.cpp
+      src/Allocation/BestFit.cpp
+      src/Allocation/WorstFit.cpp
+   )
+   
+   add_definitions(-D %USER_ENV_DEFINITION%)
+   ```
+3. Navigate to the project directory and compile:  
    ```bash
    cd Dynamic-Memory-Allocator-Simulator
    g++ main.cpp allocator.cpp visualizer.cpp utils.cpp -o memory_simulator
    ```
-3. Run the program:  
+4. Run the program:  
    ```bash
    ./memory_simulator
    ```
