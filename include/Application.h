@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 #include <map>
-#include <AllocationTechnique.h>
+#include "Allocation/AllocationTechnique.h"
 
 class Application {
 public:
@@ -37,6 +37,8 @@ private:
     static std::string GetMaskedInput(int x, int y);
 
     void processesTable(int mode);
+
+    void visualizeAll();
 };
 
 #endif // APPLICATION_H

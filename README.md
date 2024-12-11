@@ -55,25 +55,30 @@ A C++ project to simulate and compare memory allocation techniques in operating 
    ```
 2. Customize CMAKE file 
     ```cmake
-   cmake_minimum_required(VERSION 3.30)
+   cmake_minimum_required(VERSION 3.25)
    project(Dynamic_Memory_Allocator_Simulator)
    
    set(CMAKE_CXX_STANDARD 23)
    
-   include_directories(include)
-   include_directories(include/Allocation)
+   #include_directories(include)
+   #include_directories(include/Allocation)
    
    add_executable(Dynamic_Memory_Allocator_Simulator
-      main.cpp
-      src/UI.cpp
-      src/Application.cpp
-      src/ConsoleHandler.cpp
-      src/Allocation/FirstFit.cpp
-      src/Allocation/BestFit.cpp
-      src/Allocation/WorstFit.cpp
-   )
-   
-   add_definitions(-D %USER_ENV_DEFINITION%)
+   include/Allocation/AllocationTechnique.h
+   include/Allocation/BestFit.h
+   include/Allocation/FirstFit.h
+   include/Allocation/WorstFit.h
+   include/Application.h
+   include/ColorCode.h
+   include/ConsoleHandler.h
+   include/UI.h
+   src/Allocation/BestFit.cpp
+   src/Allocation/FirstFit.cpp
+   src/Allocation/WorstFit.cpp
+   src/Application.cpp
+   src/ConsoleHandler.cpp
+   src/UI.cpp
+   main.cpp)
    ```
 3. Navigate to the project directory and compile:  
    ```bash
