@@ -274,6 +274,10 @@ void Application::HandleUserCommands() {
         ConsoleHandler::SetColor(ColorCode::Green);
         switch (val) {
             case 1:
+                firstPartitions = allocatedPartitions;
+                bestPartitions = allocatedPartitions;
+                worstPartitions = allocatedPartitions;
+
                 visualizeAll();
                 break;
             case 2:
@@ -487,15 +491,9 @@ void Application::visualizeAll() {
     ConsoleHandler::ClearConsole();
     UI::DrawBoxBorder();
     UI::DisplayTime(1, 1);
-    std::map<int, Partition> bestPartitions = allocatedPartitions;
-    std::map<int, Partition> firstPartitions = allocatedPartitions;
-    std::map<int, Partition> worstPartitions = allocatedPartitions;
 
-    std::map<int, Process> firstProcesses = allocatedProcesses;
-    std::map<int, Process> bestProcesses = allocatedProcesses;
-    std::map<int, Process> worstProcesses = allocatedProcesses;
 
-    std::string title = "Manage Processes : ",s1= "First Fit Technique,  ", s2="Best Fit Technique,   ",s3= "Worst Fit Technique.";
+    std::string title = "Manage Processes : ", s1 = "First Fit Technique,  ", s2 = "Best Fit Technique,   ", s3 = "Worst Fit Technique.";
 
     UI::DisplayTitle(title, 20, 1);
     ConsoleHandler::SetColor(ColorCode::Yellow);
@@ -521,39 +519,52 @@ void Application::visualizeAll() {
     ConsoleHandler::SetColor(ColorCode::LightBlue);
 
     cout << "Processes ID";
-    int x = 27, y = 14;
+    int x = 27, y = 15;
+    std::set<int> st;
+    std::string s;
     for (int i = 0; i < allocatedPartitions.size(); ++i) {
-        std::set<int> st = firstPartitions[i].process_id;
+        st = firstPartitions[i].process_id;
+        x = (i) * 10 + 27, y = 15;
         ConsoleHandler::SetColor(ColorCode::Yellow);
-        ConsoleHandler::SetCursorPosition(x, y++);
+        ConsoleHandler::SetCursorPosition(x, y);
         int cnt = 0, def = x;
+        s = "";
         for (auto el: st) {
-            cout << ", "[cnt == 0] << el;
-            ConsoleHandler::SetCursorPosition(x += 2, y);
-            if (cnt == 2) y++, cnt = 0, x = def;
-            cnt++;
+            s += std::to_string(el);
+            s += ", ";
         }
+        if (s.size() > 8)
+            cout << s.substr(0, 5) << "...";
+        else
+            cout << s.substr(0, s.size() - 2);
         st = bestPartitions[i].process_id;
+        x = (i) * 10 + 27, y = 16;
         ConsoleHandler::SetColor(ColorCode::Green);
-        ConsoleHandler::SetCursorPosition(x, y++);
+        ConsoleHandler::SetCursorPosition(x, y);
         cnt = 0, def = x;
+        s = "";
         for (auto el: st) {
-            cout << ", "[cnt == 0] << el;
-            ConsoleHandler::SetCursorPosition(x += 2, y);
-            if (cnt == 2) y++, cnt = 0, x = def;
-            cnt++;
+            s += std::to_string(el);
+            s += ", ";
         }
+        if (s.size() > 8)
+            cout << s.substr(0, 5) << "...";
+        else
+            cout << s.substr(0, s.size() - 2);
         st = worstPartitions[i].process_id;
+        x = (i) * 10 + 27, y = 17;
         ConsoleHandler::SetColor(ColorCode::Red);
         ConsoleHandler::SetCursorPosition(x, y);
         cnt = 0, def = x;
+        s = "";
         for (auto el: st) {
-            cout << ", "[cnt == 0] << el;
-            ConsoleHandler::SetCursorPosition(x += 2, y -= 2);
-            if (cnt == 2) y++, cnt = 0, x = def;
-            cnt++;
+            s += std::to_string(el);
+            s += ", ";
         }
-        x = (i + 1) * 10 + 27, y = 15;
+        if (s.size() > 8)
+            cout << s.substr(0, 6) << "...";
+        else
+            cout << s.substr(0, s.size() - 2);
     }
     ConsoleHandler::SetColor(ColorCode::LightRed);
     ConsoleHandler::SetCursorPosition(5, 20);
@@ -622,7 +633,9 @@ void Application::visualizeAll() {
                     visualizeAll();
         }
         id = std::stoi(tmp);
-        if (firstProcesses.find(id) != firstProcesses.end()) {
+        if (firstProcesses.find(id) != firstProcesses.end() &&
+            bestProcesses.find(id) != bestProcesses.end() &&
+            worstProcesses.find(id) != worstProcesses.end()) {
             DisplayInvalidInput(4, 6, "The id is already taken"),
                     visualizeAll();
         }
@@ -631,17 +644,16 @@ void Application::visualizeAll() {
         cin >> processSpace;
 
         /// implement case of impossible allocate
+        Process newProcess(id, processSpace);
 
-        Process firstProcess(id, processSpace), bestProcess(id, processSpace), worstProcess(id, processSpace);
+        FirstFit::allocate(newProcess, firstPartitions);
+        firstProcesses[id] = newProcess;
 
-        FirstFit::allocate(firstProcess, firstPartitions);
-        firstProcesses[id] = firstProcess;
+        BestFit::allocate(newProcess, bestPartitions);
+        bestProcesses[id] = newProcess;
 
-        BestFit::allocate(bestProcess, bestPartitions);
-        bestProcesses[id] = bestProcess;
-
-        WorstFit::allocate(worstProcess, worstPartitions);
-        worstProcesses[id] = worstProcess;
+        WorstFit::allocate(newProcess, worstPartitions);
+        worstProcesses[id] = newProcess;
 
         visualizeAll();
 
@@ -666,10 +678,6 @@ void Application::visualizeAll() {
                     visualizeAll();;
         }
         id = std::stoi(tmp);
-        if (allocatedProcesses.find(id) == allocatedProcesses.end()) {
-            DisplayInvalidInput(4, 6, "The process id don't added before"),
-                    visualizeAll();
-        }
 
         FirstFit::deallocate(id, allocatedProcesses, firstPartitions);
 

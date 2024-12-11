@@ -18,14 +18,10 @@ bool BestFit::allocate(Process &process, std::map<int, Partition> &partitions) {
     }
 
     if (best != NOT_FOUND) {
-        auto it = partitions.find(best);
-        if (it != partitions.end()) {
-            auto [_, partition] = *it;
-            partition.allocated += process.space;
-            partition.process_id.insert(process.id);
-            process.allocated_at = partition.id;
-            return true;
-        }
+        partitions[best].allocated += process.space;
+        partitions[best].process_id.insert(process.id);
+        process.allocated_at = partitions[best].id;
+        return true;
     }
     return false;
 }
