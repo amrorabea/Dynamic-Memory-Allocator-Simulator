@@ -10,11 +10,11 @@ WorstFit::WorstFit(const std::map<int, Partition> &partitions) {
 bool WorstFit::allocate(Process &process, std::map<int, Partition> &partitions) {
     int worse = NOT_FOUND, max_space = MIN_SPACE;
 
-    for (const auto &[_, partition]: partitions) {
+    for (const auto &[key, partition]: partitions) {
         int available = partition.space - partition.allocated;
         if (available >= process.space && available > max_space) {
             max_space = available;
-            worse = _;
+            worse = key;
         }
     }
 

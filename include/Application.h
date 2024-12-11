@@ -33,6 +33,12 @@ private:
 
     void HandleUserCommands();
 
+    void FirstFit();
+
+    void BestFit();
+
+    void WorstFit();
+
     static void ExitApplication();
 
     static void DisplayInvalidInput(int x = 4, int y = 18, std::string msg = "Invalid choice. Please try again.",
@@ -40,7 +46,7 @@ private:
 
     static void DisplaySuccessMessage(const std::string &message, int x, int y);
 
-    static void DisplayInvalidPassword();
+    static void DisplayInvalidPassword(std::string msg = "Invalid Password or username. Try again.");
 
     static std::string GetMaskedInput(int x, int y);
 

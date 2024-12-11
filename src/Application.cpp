@@ -50,18 +50,29 @@ void Application::DisplayFirstWindow() {
         UI::DisplayTitle("Dynamic Memory Allocator Simulator", 40, 5);
         UI::ClearRegion(2, 8, 86, 15); // Clear previous messages
         std::vector<std::string> asciiArt = {
-                "------------------------------------------------------------------------------",
-                "|                 Welcome to the Memory Allocation Simulator                 |",
-                "|       Simulating First-Fit, Best-Fit, and Worst-Fit Memory Allocation      |",
-                "------------------------------------------------------------------------------"
+            "   -----------------------------------------------------------------------",
+            " /     ` .  `      '   .` .       `    ` .  `     .  ` ' `   `     ' .  .  \\",
+            "/  ` .  >  `   `   Welcome to the Memory AllocationSimulator    `  <   .    \\",
+            "\\ `  >  Simulating First Fit, Best Fit, and Worst Fit Memory Allocation ` < /",
+            " \\    `    .   `       `     .  ` '    `    ` .  `   `   '   .` .  ' .  .  /",
+            // "   ------------------------------------------------------------------------",
         };
 
-        ConsoleHandler::SetColor(ColorCode::LightBlue);
 
         for (int i = 0; i < asciiArt.size(); i++) {
-            ConsoleHandler::SetCursorPosition(18, 20 + (2 * i));
-            cout << asciiArt[i];
+            ConsoleHandler::SetCursorPosition(18, 19 + (2 * i));
+            for (char c: asciiArt[i]) {
+                if (c == '|' || c == '/' || c == '\\' || c == '<' || c == '>' ||
+                    c == '`' || c == '.' || c == '\'' || c == '-') {
+                    ConsoleHandler::SetColor(ColorCode::DarkGray);
+                } else {
+                    ConsoleHandler::SetColor(ColorCode::LightCyan);
+                }
+                std::cout << c;
+            }
         }
+        ConsoleHandler::SetColor(ColorCode::White);
+
         ConsoleHandler::SetColor(ColorCode::Yellow);
         ConsoleHandler::SetCursorPosition(4, 10);
         cout << "1. Update partition values ";
@@ -86,17 +97,13 @@ void Application::DisplayFirstWindow() {
         }
 
         switch (choice) {
-            case 1:
-                HandleAdminLogin();
+            case 1: HandleAdminLogin();
                 break;
-            case 2:
-                HandleUserCommands();
+            case 2: HandleUserCommands();
                 break;
-            case 3:
-                ExitApplication();
+            case 3: ExitApplication();
                 return;
-            default:
-                DisplayInvalidInput();
+            default: DisplayInvalidInput();
                 DisplayFirstWindow();
                 break;
         }
@@ -104,7 +111,7 @@ void Application::DisplayFirstWindow() {
 }
 
 void Application::HandleAdminLogin() {
-    const std::string adminPassword = "1";
+    const std::string adminPassword = "admin";
     std::string inputPassword;
 
     while (true) {
@@ -112,8 +119,8 @@ void Application::HandleAdminLogin() {
         UI::DrawBoxBorder();
         UI::DisplayTitle(" ", 55, 8);
         std::vector<std::string> title = {
-                "                              Admin Login page                              ",
-                "        Enter valid Admin password, or enter \"000\" to back to HomePage      ",
+            "                              Admin Login page                              ",
+            "        Enter valid Admin password, or enter \"000\" to back to HomePage      ",
         };
 
         ConsoleHandler::SetColor(ColorCode::Cyan);
@@ -125,18 +132,23 @@ void Application::HandleAdminLogin() {
 
         ConsoleHandler::SetColor(ColorCode::Yellow);
         ConsoleHandler::SetCursorPosition(30, 15);
-        cout << "USERNAME: Admin";
+        cout << "USERNAME: ";
+        std::string userInput;
+        ConsoleHandler::SetColor(ColorCode::DarkGray);
+        cin >> userInput;
         ConsoleHandler::SetCursorPosition(30, 16);
+        ConsoleHandler::SetColor(ColorCode::Yellow);
         cout << "PASSWORD: ";
+        ConsoleHandler::SetColor(ColorCode::DarkGray);
 
-        inputPassword = GetMaskedInput(41, 16);
+        inputPassword = GetMaskedInput(40, 16);
         if (inputPassword == "000") {
-            // Back to First Window
             ConsoleHandler::ClearConsole();
             UI::DrawBoxBorder();
             DisplayFirstWindow();
             return;
-        } else if (inputPassword == adminPassword) {
+        }
+        if (inputPassword == adminPassword && userInput == "admin") {
             ConsoleHandler::ClearConsole();
             UI::DrawBoxBorder();
             DisplayUpdatePartitionsWindow();
@@ -149,7 +161,7 @@ void Application::HandleAdminLogin() {
 }
 
 void Application::DisplayUpdatePartitionsWindow() {
-    ConsoleHandler::SetCursorPosition(15, 10);
+    ConsoleHandler::SetCursorPosition(20, 10);
     ConsoleHandler::SetColor(ColorCode::Yellow);
     cout << "Updating Partition Sizes";
 
@@ -166,11 +178,13 @@ void Application::DisplayUpdatePartitionsWindow() {
             ConsoleHandler::SetColor(ColorCode::LightRed);
             cout << "partitions " << i + 1 << " value = " << partitions[i] << "     ";
         }
-        ConsoleHandler::SetCursorPosition(5, 15);
+        ConsoleHandler::SetCursorPosition(20, 15);
         ConsoleHandler::SetColor(ColorCode::DarkGray);
-        cout << "Select partition id 1 : 9 to change it's value or 0 to exit to home page";
+        cout << "Select partition id 1 : 9 to change size.";
+        ConsoleHandler::SetCursorPosition(20, 16);
+        cout << "Enter 0 to return to home page.";
         ConsoleHandler::SetColor(ColorCode::LightCyan);
-        ConsoleHandler::SetCursorPosition(20, 17);
+        ConsoleHandler::SetCursorPosition(20, 20);
         cout << "New partition id : ";
         ConsoleHandler::SetColor(ColorCode::White);
         int choice;
@@ -180,7 +194,7 @@ void Application::DisplayUpdatePartitionsWindow() {
                 break;
             }
             ConsoleHandler::SetColor(ColorCode::LightCyan);
-            ConsoleHandler::SetCursorPosition(20, 20);
+            ConsoleHandler::SetCursorPosition(20, 22);
             cout << "New value: ";
             ConsoleHandler::SetColor(ColorCode::White);
             int newValue;
@@ -203,7 +217,7 @@ void Application::DisplayUpdatePartitionsWindow() {
             }
             partitions[choice - 1] = newValue;
         } else {
-            ConsoleHandler::SetCursorPosition(20, 25);
+            ConsoleHandler::SetCursorPosition(20, 26);
             ConsoleHandler::SetColor(ColorCode::Red);
             cout << "Invalid input. Please enter an integer value between 0 and 9 Exclusive.";
             Sleep(1500);
@@ -211,7 +225,7 @@ void Application::DisplayUpdatePartitionsWindow() {
         // clear window after get value
         ConsoleHandler::SetCursorPosition(20, 25);
         cout << "                                                                              ";
-        ConsoleHandler::SetCursorPosition(20, 17);
+        ConsoleHandler::SetCursorPosition(20, 22);
         cout << "                                                 ";
         ConsoleHandler::SetCursorPosition(20, 20);
         cout << "                                                 ";
@@ -268,29 +282,22 @@ void Application::HandleUserCommands() {
         DisplayInvalidInput();
         HandleUserCommands();
     }
-
+    firstPartitions = allocatedPartitions;
+    bestPartitions = allocatedPartitions;
+    worstPartitions = allocatedPartitions;
     if (val == 1 || val == 2 || val == 3 || val == 4) {
         ConsoleHandler::SetCursorPosition(4, 20);
         ConsoleHandler::SetColor(ColorCode::Green);
         switch (val) {
-            case 1:
-                firstPartitions = allocatedPartitions;
-                bestPartitions = allocatedPartitions;
-                worstPartitions = allocatedPartitions;
-
-                visualizeAll();
+            case 1: visualizeAll();
                 break;
-            case 2:
-                processesTable(2);
+            case 2: FirstFit();
                 break;
-            case 3:
-                processesTable(3);
+            case 3: BestFit();
                 break;
-            case 4:
-                processesTable(4);
+            case 4: WorstFit();
                 break;
-            default:
-                break;
+            default: break;
         }
     } else if (val == 5) {
         // Back to First Window
@@ -309,16 +316,12 @@ void Application::HandleUserCommands() {
     UI::DrawBoxBorder();
 }
 
-void Application::processesTable(int mode) {
+void Application::FirstFit() {
     ConsoleHandler::ClearConsole();
     UI::DrawBoxBorder();
     UI::DisplayTime(1, 1);
 
-    std::string titles[] = {
-            "First Fit Technique", "Best Fit Technique",
-            "Worst Fit Technique"
-    };
-    std::string title = "Manage Processes : " + titles[mode - 2];
+    std::string title = "Manage Processes : First Fit Technique";
     UI::DisplayTitle(title, 40, 1);
 
     UI::DrawTableBorder(114, 13, 3, 14);
@@ -337,8 +340,8 @@ void Application::processesTable(int mode) {
     ConsoleHandler::SetColor(ColorCode::LightBlue);
     cout << "Processes ID";
     int x = 27, y = 15;
-    for (int i = 0; i < allocatedPartitions.size(); ++i) {
-        std::set<int> st = allocatedPartitions[i].process_id;
+    for (int i = 0; i < firstPartitions.size(); ++i) {
+        std::set<int> st = firstPartitions[i].process_id;
         ConsoleHandler::SetCursorPosition(x, y);
         int cnt = 0, def = x;
         for (auto el: st) {
@@ -354,8 +357,8 @@ void Application::processesTable(int mode) {
     cout << "Allocated";
     x = 30, y = 20;
     ConsoleHandler::SetCursorPosition(x, y);
-    for (int i = 0; i < allocatedPartitions.size(); ++i) {
-        cout << allocatedPartitions[i].allocated;
+    for (int i = 0; i < firstPartitions.size(); ++i) {
+        cout << firstPartitions[i].allocated;
         ConsoleHandler::SetCursorPosition(x += 10, y);
     }
     x = 30, y = 24;
@@ -363,8 +366,8 @@ void Application::processesTable(int mode) {
     ConsoleHandler::SetCursorPosition(5, 24);
     cout << "Unallocated";
     ConsoleHandler::SetCursorPosition(x, y);
-    for (int i = 0; i < allocatedPartitions.size(); ++i) {
-        cout << allocatedPartitions[i].space - allocatedPartitions[i].allocated;
+    for (int i = 0; i < firstPartitions.size(); ++i) {
+        cout << firstPartitions[i].space - firstPartitions[i].allocated;
         ConsoleHandler::SetCursorPosition(x += 10, y);
     }
 
@@ -399,12 +402,12 @@ void Application::processesTable(int mode) {
         cin >> tmp;
         if (tmp.size() > 3) {
             DisplayInvalidInput(40, 26, "Large ID size, reenter another small id"),
-                    processesTable(mode);
+                    FirstFit();
         }
         id = std::stoi(tmp);
-        if (allocatedProcesses.find(id) != allocatedProcesses.end()) {
+        if (firstProcesses.find(id) != firstProcesses.end()) {
             DisplayInvalidInput(4, 6, "The id is already taken"),
-                    processesTable(mode);
+                    FirstFit();
         }
         ConsoleHandler::SetCursorPosition(4, 6);
         cout << "Process Space: ";
@@ -413,7 +416,7 @@ void Application::processesTable(int mode) {
         for (auto partition: partitions) {
             if (partition >= processSpace) {
                 can_wait = 1;
-                for (const auto &[_, part]: allocatedPartitions) {
+                for (const auto &[_, part]: firstPartitions) {
                     if (part.space - part.allocated >= processSpace) {
                         can = 1;
                         break;
@@ -424,27 +427,17 @@ void Application::processesTable(int mode) {
         }
         if (!can_wait) {
             DisplayInvalidInput(4, 8, "The process space is larger"
-                                      " than all partitions", 2000), processesTable(mode);
+                                " than all partitions", 2000), FirstFit();
         }
         if (!can) {
             DisplayInvalidInput(4, 8, "The process space is larger than"
-                                      " all unallocated partitions, MUST Wait", 2000),
-                    processesTable(mode);
+                                " all unallocated partitions, MUST Wait", 2000),
+                    FirstFit();
         }
         Process newProcess(id, processSpace);
-        if (mode == 2) {
-            FirstFit::allocate(newProcess, allocatedPartitions);
-            allocatedProcesses[id] = newProcess;
-            processesTable(2);
-        } else if (mode == 3) {
-            BestFit::allocate(newProcess, allocatedPartitions);
-            allocatedProcesses[id] = newProcess;
-            processesTable(3);
-        } else {
-            WorstFit::allocate(newProcess, allocatedPartitions);
-            allocatedProcesses[id] = newProcess;
-            processesTable(4);
-        }
+        FirstFit::allocate(newProcess, firstPartitions);
+        firstProcesses[id] = newProcess;
+        FirstFit();
     } else if (choice == 2) {
         ConsoleHandler::SetCursorPosition(4, 8);
         cout << "                                   ";
@@ -456,52 +449,35 @@ void Application::processesTable(int mode) {
         cout << "                                   ";
         ConsoleHandler::SetCursorPosition(4, 10);
         cout << "                                   ";
-        int id;
         ConsoleHandler::SetCursorPosition(4, 4);
         cout << "Process ID: ";
         std::string tmp;
         cin >> tmp;
         if (tmp.size() > 3) {
             DisplayInvalidInput(40, 26, "Large ID size, reenter another small id"),
-                    processesTable(mode);
+                    FirstFit();
         }
-        id = std::stoi(tmp);
-        if (allocatedProcesses.find(id) == allocatedProcesses.end()) {
+        int id = std::stoi(tmp);
+        if (firstProcesses.find(id) == firstProcesses.end()) {
             DisplayInvalidInput(4, 6, "The process id don't added before"),
-                    processesTable(mode);
+                    FirstFit();
         }
-        if (mode == 2) {
-            FirstFit::deallocate(id, allocatedProcesses, allocatedPartitions);
-            processesTable(2);
-        } else if (mode == 3) {
-            BestFit::deallocate(id, allocatedProcesses, allocatedPartitions);
-            processesTable(3);
-        } else {
-            WorstFit::deallocate(id, allocatedProcesses, allocatedPartitions);
-            processesTable(4);
-        }
+        FirstFit::deallocate(id, firstProcesses, firstPartitions);
+        FirstFit();
     } else if (choice == 3) {
         ConsoleHandler::ClearConsole();
         UI::DrawBoxBorder();
         DisplayFirstWindow();
-    } else DisplayInvalidInput(4, 10), processesTable(mode);
+    } else DisplayInvalidInput(4, 10), FirstFit();
 }
 
-void Application::visualizeAll() {
+void Application::BestFit() {
     ConsoleHandler::ClearConsole();
     UI::DrawBoxBorder();
     UI::DisplayTime(1, 1);
 
-
-    std::string title = "Manage Processes : ", s1 = "First Fit Technique,  ", s2 = "Best Fit Technique,   ", s3 = "Worst Fit Technique.";
-
-    UI::DisplayTitle(title, 20, 1);
-    ConsoleHandler::SetColor(ColorCode::Yellow);
-    cout << s1;
-    ConsoleHandler::SetColor(ColorCode::Green);
-    cout << s2;
-    ConsoleHandler::SetColor(ColorCode::Red);
-    cout << s3;
+    std::string title = "Manage Processes : Best Fit Technique";
+    UI::DisplayTitle(title, 40, 1);
 
     UI::DrawTableBorder(114, 13, 3, 14);
     UI::DrawHorizontalLine(115, 3, 18);
@@ -517,86 +493,37 @@ void Application::visualizeAll() {
 
     ConsoleHandler::SetCursorPosition(5, 16);
     ConsoleHandler::SetColor(ColorCode::LightBlue);
-
     cout << "Processes ID";
     int x = 27, y = 15;
-    std::set<int> st;
-    std::string s;
-    for (int i = 0; i < allocatedPartitions.size(); ++i) {
-        st = firstPartitions[i].process_id;
-        x = (i) * 10 + 27, y = 15;
-        ConsoleHandler::SetColor(ColorCode::Yellow);
+    for (int i = 0; i < bestPartitions.size(); ++i) {
+        std::set<int> st = bestPartitions[i].process_id;
         ConsoleHandler::SetCursorPosition(x, y);
         int cnt = 0, def = x;
-        s = "";
         for (auto el: st) {
-            s += std::to_string(el);
-            s += ", ";
+            cout << ", "[cnt == 0] << el;
+            ConsoleHandler::SetCursorPosition(x += 2, y);
+            if (cnt == 2) y++, cnt = 0, x = def;
+            cnt++;
         }
-        if (s.size() > 8)
-            cout << s.substr(0, 5) << "...";
-        else
-            cout << s.substr(0, s.size() - 2);
-        st = bestPartitions[i].process_id;
-        x = (i) * 10 + 27, y = 16;
-        ConsoleHandler::SetColor(ColorCode::Green);
-        ConsoleHandler::SetCursorPosition(x, y);
-        cnt = 0, def = x;
-        s = "";
-        for (auto el: st) {
-            s += std::to_string(el);
-            s += ", ";
-        }
-        if (s.size() > 8)
-            cout << s.substr(0, 5) << "...";
-        else
-            cout << s.substr(0, s.size() - 2);
-        st = worstPartitions[i].process_id;
-        x = (i) * 10 + 27, y = 17;
-        ConsoleHandler::SetColor(ColorCode::Red);
-        ConsoleHandler::SetCursorPosition(x, y);
-        cnt = 0, def = x;
-        s = "";
-        for (auto el: st) {
-            s += std::to_string(el);
-            s += ", ";
-        }
-        if (s.size() > 8)
-            cout << s.substr(0, 6) << "...";
-        else
-            cout << s.substr(0, s.size() - 2);
+        x = (i + 1) * 10 + 27, y = 15;
     }
     ConsoleHandler::SetColor(ColorCode::LightRed);
     ConsoleHandler::SetCursorPosition(5, 20);
     cout << "Allocated";
-    x = 30, y = 19;
+    x = 30, y = 20;
     ConsoleHandler::SetCursorPosition(x, y);
-    for (int i = 0; i < allocatedPartitions.size(); ++i) {
-        ConsoleHandler::SetColor(ColorCode::Yellow);
-        cout << firstPartitions[i].allocated;
-        ConsoleHandler::SetCursorPosition(x, ++y);
-        ConsoleHandler::SetColor(ColorCode::Green);
+    for (int i = 0; i < bestPartitions.size(); ++i) {
         cout << bestPartitions[i].allocated;
-        ConsoleHandler::SetCursorPosition(x, ++y);
-        ConsoleHandler::SetColor(ColorCode::Red);
-        cout << worstPartitions[i].allocated;
-        ConsoleHandler::SetCursorPosition(x += 10, y -= 2);
+        ConsoleHandler::SetCursorPosition(x += 10, y);
     }
-    x = 30, y = 23;
+    x = 30, y = 24;
     ConsoleHandler::SetColor(ColorCode::LightGreen);
     ConsoleHandler::SetCursorPosition(5, 24);
     cout << "Unallocated";
     ConsoleHandler::SetCursorPosition(x, y);
-    for (int i = 0; i < allocatedPartitions.size(); ++i) {
-        ConsoleHandler::SetColor(ColorCode::Yellow);
-        cout << firstPartitions[i].space - firstPartitions[i].allocated;
-        ConsoleHandler::SetCursorPosition(x, ++y);
-        ConsoleHandler::SetColor(ColorCode::Green);
+    for (int i = 0; i < bestPartitions.size(); ++i) {
         cout << bestPartitions[i].space - bestPartitions[i].allocated;
-        ConsoleHandler::SetCursorPosition(x, ++y);
-        ConsoleHandler::SetColor(ColorCode::Red);
-        cout << worstPartitions[i].space - worstPartitions[i].allocated;
-        ConsoleHandler::SetCursorPosition(x += 10, y -= 2);
+        ConsoleHandler::SetCursorPosition(x += 10, y);
     }
 
     ConsoleHandler::SetColor(ColorCode::Yellow);
@@ -630,10 +557,376 @@ void Application::visualizeAll() {
         cin >> tmp;
         if (tmp.size() > 3) {
             DisplayInvalidInput(40, 26, "Large ID size, reenter another small id"),
+                    BestFit();
+        }
+        id = std::stoi(tmp);
+        if (bestProcesses.find(id) != bestProcesses.end()) {
+            DisplayInvalidInput(4, 6, "The id is already taken"),
+                    BestFit();
+        }
+        ConsoleHandler::SetCursorPosition(4, 6);
+        cout << "Process Space: ";
+        cin >> processSpace;
+        bool can = 0, can_wait = 0;
+        for (auto partition: partitions) {
+            if (partition >= processSpace) {
+                can_wait = 1;
+                for (const auto &[_, part]: bestPartitions) {
+                    if (part.space - part.allocated >= processSpace) {
+                        can = 1;
+                        break;
+                    }
+                }
+            }
+            if (can) break;
+        }
+        if (!can_wait) {
+            DisplayInvalidInput(4, 8, "The process space is larger"
+                                " than all partitions", 2000), BestFit();
+        }
+        if (!can) {
+            DisplayInvalidInput(4, 8, "The process space is larger than"
+                                " all unallocated partitions, MUST Wait", 2000),
+                    BestFit();
+        }
+        Process newProcess(id, processSpace);
+        BestFit::allocate(newProcess, bestPartitions);
+        bestProcesses[id] = newProcess;
+        BestFit();
+    } else if (choice == 2) {
+        ConsoleHandler::SetCursorPosition(4, 8);
+        cout << "                                   ";
+        ConsoleHandler::SetCursorPosition(4, 4);
+        cout << "                                   ";
+        ConsoleHandler::SetCursorPosition(4, 6);
+        cout << "                                   ";
+        ConsoleHandler::SetCursorPosition(4, 8);
+        cout << "                                   ";
+        ConsoleHandler::SetCursorPosition(4, 10);
+        cout << "                                   ";
+        ConsoleHandler::SetCursorPosition(4, 4);
+        cout << "Process ID: ";
+        std::string tmp;
+        cin >> tmp;
+        if (tmp.size() > 3) {
+            DisplayInvalidInput(40, 26, "Large ID size, reenter another small id"),
+                    BestFit();
+        }
+        int id = std::stoi(tmp);
+        if (bestProcesses.find(id) == bestProcesses.end()) {
+            DisplayInvalidInput(4, 6, "The process id don't added before"),
+                    BestFit();
+        }
+        BestFit::deallocate(id, bestProcesses, bestPartitions);
+        BestFit();
+    } else if (choice == 3) {
+        ConsoleHandler::ClearConsole();
+        UI::DrawBoxBorder();
+        DisplayFirstWindow();
+    } else DisplayInvalidInput(4, 10), BestFit();
+}
+
+void Application::WorstFit() {
+    ConsoleHandler::ClearConsole();
+    UI::DrawBoxBorder();
+    UI::DisplayTime(1, 1);
+
+    std::string title = "Manage Processes : Worst Fit Technique";
+    UI::DisplayTitle(title, 40, 1);
+
+    UI::DrawTableBorder(114, 13, 3, 14);
+    UI::DrawHorizontalLine(115, 3, 18);
+    UI::DrawHorizontalLine(115, 3, 22);
+    int vert = 26;
+    for (int i = 0; i < partitions.size(); ++i) {
+        ConsoleHandler::SetColor(ColorCode::DarkGray);
+        UI::DrawVerticalLine(14, vert, 14), vert += 10;
+        ConsoleHandler::SetColor(ColorCode::Brown);
+        ConsoleHandler::SetCursorPosition(vert - 7, 13);
+        cout << partitions[i];
+    }
+
+    ConsoleHandler::SetCursorPosition(5, 16);
+    ConsoleHandler::SetColor(ColorCode::LightBlue);
+    cout << "Processes ID";
+    int x = 27, y = 15;
+    for (int i = 0; i < worstPartitions.size(); ++i) {
+        std::set<int> st = worstPartitions[i].process_id;
+        ConsoleHandler::SetCursorPosition(x, y);
+        int cnt = 0, def = x;
+        for (auto el: st) {
+            cout << ", "[cnt == 0] << el;
+            ConsoleHandler::SetCursorPosition(x += 2, y);
+            if (cnt == 2) y++, cnt = 0, x = def;
+            cnt++;
+        }
+        x = (i + 1) * 10 + 27, y = 15;
+    }
+    ConsoleHandler::SetColor(ColorCode::LightRed);
+    ConsoleHandler::SetCursorPosition(5, 20);
+    cout << "Allocated";
+    x = 30, y = 20;
+    ConsoleHandler::SetCursorPosition(x, y);
+    for (int i = 0; i < worstPartitions.size(); ++i) {
+        cout << worstPartitions[i].allocated;
+        ConsoleHandler::SetCursorPosition(x += 10, y);
+    }
+    x = 30, y = 24;
+    ConsoleHandler::SetColor(ColorCode::LightGreen);
+    ConsoleHandler::SetCursorPosition(5, 24);
+    cout << "Unallocated";
+    ConsoleHandler::SetCursorPosition(x, y);
+    for (int i = 0; i < worstPartitions.size(); ++i) {
+        cout << worstPartitions[i].space - worstPartitions[i].allocated;
+        ConsoleHandler::SetCursorPosition(x += 10, y);
+    }
+
+    ConsoleHandler::SetColor(ColorCode::Yellow);
+
+    ConsoleHandler::SetCursorPosition(4, 4);
+    cout << "1. Allocate";
+    ConsoleHandler::SetCursorPosition(4, 6);
+    cout << "2. Deallocate";
+    ConsoleHandler::SetCursorPosition(4, 8);
+    cout << "3. Back";
+    ConsoleHandler::SetCursorPosition(4, 10);
+    cout << "Choice: ";
+    int choice;
+    cin >> choice;
+
+    if (choice == 1) {
+        ConsoleHandler::SetCursorPosition(4, 8);
+        cout << "                                   ";
+        ConsoleHandler::SetCursorPosition(4, 4);
+        cout << "                                   ";
+        ConsoleHandler::SetCursorPosition(4, 6);
+        cout << "                                   ";
+        ConsoleHandler::SetCursorPosition(4, 8);
+        cout << "                                   ";
+        ConsoleHandler::SetCursorPosition(4, 10);
+        cout << "               ";
+        int id, processSpace;
+        ConsoleHandler::SetCursorPosition(4, 4);
+        cout << "Process ID: ";
+        std::string tmp;
+        cin >> tmp;
+        if (tmp.size() > 3) {
+            DisplayInvalidInput(40, 26, "Large ID size, reenter another small id"),
+                    WorstFit();
+        }
+        id = std::stoi(tmp);
+        if (worstProcesses.find(id) != worstProcesses.end()) {
+            DisplayInvalidInput(4, 6, "The id is already taken"),
+                    WorstFit();
+        }
+        ConsoleHandler::SetCursorPosition(4, 6);
+        cout << "Process Space: ";
+        cin >> processSpace;
+        bool can = 0, can_wait = 0;
+        for (auto partition: partitions) {
+            if (partition >= processSpace) {
+                can_wait = 1;
+                for (const auto &[_, part]: worstPartitions) {
+                    if (part.space - part.allocated >= processSpace) {
+                        can = 1;
+                        break;
+                    }
+                }
+            }
+            if (can) break;
+        }
+        if (!can_wait) {
+            DisplayInvalidInput(4, 8, "The process space is larger"
+                                " than all partitions", 2000), WorstFit();
+        }
+        if (!can) {
+            DisplayInvalidInput(4, 8, "The process space is larger than"
+                                " all unallocated partitions, MUST Wait", 2000),
+                    WorstFit();
+        }
+        Process newProcess(id, processSpace);
+        WorstFit::allocate(newProcess, worstPartitions);
+        worstProcesses[id] = newProcess;
+        WorstFit();
+    } else if (choice == 2) {
+        ConsoleHandler::SetCursorPosition(4, 8);
+        cout << "                                   ";
+        ConsoleHandler::SetCursorPosition(4, 4);
+        cout << "                                   ";
+        ConsoleHandler::SetCursorPosition(4, 6);
+        cout << "                                   ";
+        ConsoleHandler::SetCursorPosition(4, 8);
+        cout << "                                   ";
+        ConsoleHandler::SetCursorPosition(4, 10);
+        cout << "                                   ";
+        ConsoleHandler::SetCursorPosition(4, 4);
+        cout << "Process ID: ";
+        std::string tmp;
+        cin >> tmp;
+        if (tmp.size() > 3) {
+            DisplayInvalidInput(40, 26, "Large ID size, reenter another small id"),
+                    WorstFit();
+        }
+        int id = std::stoi(tmp);
+        if (worstProcesses.find(id) == worstProcesses.end()) {
+            DisplayInvalidInput(4, 6, "The process id don't added before"),
+                    WorstFit();
+        }
+        WorstFit::deallocate(id, worstProcesses, worstPartitions);
+        WorstFit();
+    } else if (choice == 3) {
+        ConsoleHandler::ClearConsole();
+        UI::DrawBoxBorder();
+        DisplayFirstWindow();
+    } else DisplayInvalidInput(4, 10), WorstFit();
+}
+
+void Application::visualizeAll() {
+    ConsoleHandler::ClearConsole();
+    UI::DrawBoxBorder();
+    UI::DisplayTime(1, 1);
+
+
+    UI::DisplayTitle("Visualize all processes", 45, 2);
+
+    const char blk_ascii = 254;
+    ConsoleHandler::SetCursorPosition(90, 5);
+    ConsoleHandler::SetColor(ColorCode::LightBlue);
+    cout << blk_ascii << "   " << "First Fit";
+    ConsoleHandler::SetCursorPosition(90, 7);
+    ConsoleHandler::SetColor(ColorCode::LightGreen);
+    cout << blk_ascii << "   " << "Best Fit";
+    ConsoleHandler::SetCursorPosition(90, 9);
+    ConsoleHandler::SetColor(ColorCode::LightRed);
+    cout << blk_ascii << "   " << "Worst Fit";
+
+
+    UI::DrawTableBorder(114, 13, 3, 14);
+    UI::DrawHorizontalLine(115, 3, 18);
+    UI::DrawHorizontalLine(115, 3, 22);
+    int vert = 26;
+    for (int i = 0; i < partitions.size(); ++i) {
+        ConsoleHandler::SetColor(ColorCode::DarkGray);
+        UI::DrawVerticalLine(14, vert, 14), vert += 10;
+        ConsoleHandler::SetColor(ColorCode::Brown);
+        ConsoleHandler::SetCursorPosition(vert - 7, 13);
+        cout << partitions[i];
+    }
+
+    ConsoleHandler::SetCursorPosition(5, 16);
+    ConsoleHandler::SetColor(ColorCode::LightGray);
+
+    cout << "Processes ID";
+    int x = 27, y = 15;
+    std::set<int> st;
+    std::string s;
+    for (int i = 0; i < allocatedPartitions.size(); ++i) {
+        st = bestPartitions[i].process_id;
+        x = (i) * 10 + 27, y = 15;
+        ConsoleHandler::SetColor(ColorCode::LightBlue);
+        ConsoleHandler::SetCursorPosition(x, y);
+        int cnt = 0, def = x;
+        s = "";
+        for (auto el: st) {
+            s += std::to_string(el);
+            s += ", ";
+        }
+        if (s.size() > 8) cout << s.substr(0, 5) << "...";
+        else cout << s.substr(0, s.size() - 2);
+        st = bestPartitions[i].process_id;
+        x = (i) * 10 + 27, y = 16;
+        ConsoleHandler::SetColor(ColorCode::LightGreen);
+        ConsoleHandler::SetCursorPosition(x, y);
+        cnt = 0, def = x;
+        s = "";
+        for (auto el: st) {
+            s += std::to_string(el);
+            s += ", ";
+        }
+        if (s.size() > 8) cout << s.substr(0, 5) << "...";
+        else cout << s.substr(0, s.size() - 2);
+        st = worstPartitions[i].process_id;
+        x = (i) * 10 + 27, y = 17;
+        ConsoleHandler::SetColor(ColorCode::LightRed);
+        ConsoleHandler::SetCursorPosition(x, y);
+        cnt = 0, def = x;
+        s = "";
+        for (auto el: st) {
+            s += std::to_string(el);
+            s += ", ";
+        }
+        if (s.size() > 8) cout << s.substr(0, 6) << "...";
+        else cout << s.substr(0, s.size() - 2);
+    }
+    ConsoleHandler::SetColor(ColorCode::LightGray);
+    ConsoleHandler::SetCursorPosition(5, 20);
+    cout << "Allocated";
+    x = 30, y = 19;
+    ConsoleHandler::SetCursorPosition(x, y);
+    for (int i = 0; i < allocatedPartitions.size(); ++i) {
+        ConsoleHandler::SetColor(ColorCode::LightBlue);
+        cout << bestPartitions[i].allocated;
+        ConsoleHandler::SetCursorPosition(x, ++y);
+        ConsoleHandler::SetColor(ColorCode::LightGreen);
+        cout << bestPartitions[i].allocated;
+        ConsoleHandler::SetCursorPosition(x, ++y);
+        ConsoleHandler::SetColor(ColorCode::LightRed);
+        cout << worstPartitions[i].allocated;
+        ConsoleHandler::SetCursorPosition(x += 10, y -= 2);
+    }
+    x = 30, y = 23;
+    ConsoleHandler::SetColor(ColorCode::LightGray);
+    ConsoleHandler::SetCursorPosition(5, 24);
+    cout << "Unallocated";
+    ConsoleHandler::SetCursorPosition(x, y);
+    for (int i = 0; i < allocatedPartitions.size(); ++i) {
+        ConsoleHandler::SetColor(ColorCode::LightBlue);
+        cout << bestPartitions[i].space - bestPartitions[i].allocated;
+        ConsoleHandler::SetCursorPosition(x, ++y);
+        ConsoleHandler::SetColor(ColorCode::LightGreen);
+        cout << bestPartitions[i].space - bestPartitions[i].allocated;
+        ConsoleHandler::SetCursorPosition(x, ++y);
+        ConsoleHandler::SetColor(ColorCode::LightRed);
+        cout << worstPartitions[i].space - worstPartitions[i].allocated;
+        ConsoleHandler::SetCursorPosition(x += 10, y -= 2);
+    }
+
+    ConsoleHandler::SetColor(ColorCode::Yellow);
+
+    ConsoleHandler::SetCursorPosition(4, 4);
+    cout << "1. Allocate";
+    ConsoleHandler::SetCursorPosition(4, 6);
+    cout << "2. Deallocate";
+    ConsoleHandler::SetCursorPosition(4, 8);
+    cout << "3. Back";
+    ConsoleHandler::SetCursorPosition(4, 10);
+    ConsoleHandler::SetColor(ColorCode::LightGray);
+    cout << "Choice: ";
+    int choice;
+    cin >> choice;
+
+    if (choice == 1) {
+        ConsoleHandler::SetCursorPosition(4, 8);
+        cout << "                                   ";
+        ConsoleHandler::SetCursorPosition(4, 4);
+        cout << "                                   ";
+        ConsoleHandler::SetCursorPosition(4, 6);
+        cout << "                                   ";
+        ConsoleHandler::SetCursorPosition(4, 8);
+        cout << "                                   ";
+        ConsoleHandler::SetCursorPosition(4, 10);
+        cout << "               ";
+        int id, processSpace;
+        ConsoleHandler::SetCursorPosition(4, 4);
+        cout << "Process ID: ";
+        std::string tmp;
+        cin >> tmp;
+        if (tmp.size() > 3) {
+            DisplayInvalidInput(40, 26, "Large ID size, reenter another small id"),
                     visualizeAll();
         }
         id = std::stoi(tmp);
-        if (firstProcesses.find(id) != firstProcesses.end() &&
+        if (bestProcesses.find(id) != bestProcesses.end() &&
             bestProcesses.find(id) != bestProcesses.end() &&
             worstProcesses.find(id) != worstProcesses.end()) {
             DisplayInvalidInput(4, 6, "The id is already taken"),
@@ -643,11 +936,10 @@ void Application::visualizeAll() {
         cout << "Process Space: ";
         cin >> processSpace;
 
-        /// implement case of impossible allocate
         Process newProcess(id, processSpace);
 
-        FirstFit::allocate(newProcess, firstPartitions);
-        firstProcesses[id] = newProcess;
+        FirstFit::allocate(newProcess, bestPartitions);
+        bestProcesses[id] = newProcess;
 
         BestFit::allocate(newProcess, bestPartitions);
         bestProcesses[id] = newProcess;
@@ -656,7 +948,6 @@ void Application::visualizeAll() {
         worstProcesses[id] = newProcess;
 
         visualizeAll();
-
     } else if (choice == 2) {
         ConsoleHandler::SetCursorPosition(4, 8);
         cout << "                                   ";
@@ -679,21 +970,19 @@ void Application::visualizeAll() {
         }
         id = std::stoi(tmp);
 
-        FirstFit::deallocate(id, allocatedProcesses, firstPartitions);
+        FirstFit::deallocate(id, bestProcesses, bestPartitions);
 
-        BestFit::deallocate(id, allocatedProcesses, bestPartitions);
+        BestFit::deallocate(id, bestProcesses, bestPartitions);
 
-        WorstFit::deallocate(id, allocatedProcesses, worstPartitions);
+        WorstFit::deallocate(id, worstProcesses, worstPartitions);
 
         visualizeAll();
-
     } else if (choice == 3) {
         ConsoleHandler::ClearConsole();
 
         UI::DrawBoxBorder();
 
         DisplayFirstWindow();
-
     } else
         DisplayInvalidInput(4, 10),
                 visualizeAll();
@@ -702,10 +991,10 @@ void Application::visualizeAll() {
 void Application::ExitApplication() {
     ConsoleHandler::ClearConsole();
     UI::DrawBoxBorder();
-    ConsoleHandler::SetCursorPosition(35, 12);
+    ConsoleHandler::SetCursorPosition(40, 12);
     ConsoleHandler::SetColor(ColorCode::LightRed);
     cout << "Exiting the application. Goodbye!";
-    Sleep(2000);
+    Sleep(2500);
     exit(EXIT_SUCCESS);
 }
 
@@ -726,10 +1015,10 @@ void Application::DisplaySuccessMessage(const std::string &message, int x, int y
     ConsoleHandler::SetColor(ColorCode::White);
 }
 
-void Application::DisplayInvalidPassword() {
+void Application::DisplayInvalidPassword(std::string msg) {
     ConsoleHandler::SetCursorPosition(20, 18);
     ConsoleHandler::SetColor(ColorCode::Red);
-    cout << "Invalid Password. Try again.";
+    cout << msg;
     Sleep(1500);
     ConsoleHandler::ClearConsole();
     UI::DrawBoxBorder();

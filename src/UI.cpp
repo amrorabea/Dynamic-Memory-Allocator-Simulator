@@ -130,3 +130,42 @@ void UI::ClearRegion(int startX, int startY, int width, int height) {
         }
     }
 }
+
+void UI::DrawSyriaFlag(int width, int offsetX, int offsetY) {
+    const int height = 9; // Adjust height for flag proportions
+
+    for (int y = 0; y < height; ++y) {
+        ConsoleHandler::SetCursorPosition(offsetX, offsetY + y);
+
+        if (y < height / 3) {
+            // Red band
+            ConsoleHandler::SetColor(ColorCode::Red);
+            for (int x = 0; x < width; ++x) {
+                std::cout << char(219);
+            }
+        } else if (y < 2 * height / 3) {
+            // White band with green stars
+            ConsoleHandler::SetColor(ColorCode::White);
+            for (int x = 0; x < width; ++x) {
+                ConsoleHandler::SetColor(ColorCode::White);
+                if ((x == width / 3 || x == 2 * width / 3) && y == height / 2) {
+                    // Draw green stars in the middle band
+                    ConsoleHandler::SetColor(ColorCode::Green);
+                    std::cout << '*';
+                    ConsoleHandler::SetColor(ColorCode::White);
+                } else {
+                    std::cout << char(219);
+                }
+            }
+        } else {
+            // Black band
+            ConsoleHandler::SetColor(ColorCode::Black);
+            for (int x = 0; x < width; ++x) {
+                std::cout << char(219);
+            }
+        }
+    }
+    // Reset color to default
+    ConsoleHandler::SetColor(ColorCode::White);
+}
+

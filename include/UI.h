@@ -17,5 +17,8 @@ public:
     static void DrawHorizontalLine(int width, int offsetX, int offsetY);
 
     static void DrawVerticalLine(int height, int offsetX, int offsetY);
+
+    static void DrawSyriaFlag(int width, int offsetX, int offsetY);
+
 };
 #endif // UI_H
