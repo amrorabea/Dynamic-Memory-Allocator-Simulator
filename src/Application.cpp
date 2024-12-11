@@ -314,12 +314,15 @@ void Application::processesTable(int mode) {
     UI::DrawHorizontalLine(115, 3, 22);
     int vert = 26;
     for (int i = 0; i < partitions.size(); ++i) {
+        ConsoleHandler::SetColor(ColorCode::DarkGray);
         UI::DrawVerticalLine(14, vert, 14), vert += 10;
+        ConsoleHandler::SetColor(ColorCode::Brown);
         ConsoleHandler::SetCursorPosition(vert - 7, 13);
         cout << partitions[i];
     }
 
     ConsoleHandler::SetCursorPosition(5, 16);
+    ConsoleHandler::SetColor(ColorCode::LightBlue);
     cout << "Processes ID";
     int x = 27, y = 15;
     for (int i = 0; i < allocatedPartitions.size(); ++i) {
@@ -334,6 +337,7 @@ void Application::processesTable(int mode) {
         }
         x = (i + 1) * 10 + 27, y = 15;
     }
+    ConsoleHandler::SetColor(ColorCode::LightRed);
     ConsoleHandler::SetCursorPosition(5, 20);
     cout << "Allocated";
     x = 30, y = 20;
@@ -343,6 +347,7 @@ void Application::processesTable(int mode) {
         ConsoleHandler::SetCursorPosition(x += 10, y);
     }
     x = 30, y = 24;
+    ConsoleHandler::SetColor(ColorCode::LightGreen);
     ConsoleHandler::SetCursorPosition(5, 24);
     cout << "Unallocated";
     ConsoleHandler::SetCursorPosition(x, y);
