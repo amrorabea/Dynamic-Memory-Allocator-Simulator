@@ -1,61 +1,159 @@
-# Dynamic Memory Allocator Simulator
+# Dynamic-Memory-Allocator-Simulator
 
-A C++ project to simulate and compare memory allocation techniques in operating systems, including First-Fit, Best-Fit, and Worst-Fit. This simulator allows users to visualize how these algorithms work and evaluate their efficiency in terms of memory usage and fragmentation.
+![Project Banner](#) 
+
+---
+
+## ✨ Introduction
+
+Memory management is a fundamental aspect of operating systems, crucial for optimizing performance and resource
+utilization. This project, **Dynamic-Memory-Allocator-Simulator**, is a C++ application designed to simulate and compare
+different memory allocation techniques: **First-Fit**, **Best-Fit**, and **Worst-Fit**. By visualizing how these
+algorithms allocate and deallocate memory, users can gain a deeper understanding of their efficiency in terms of memory
+usage and fragmentation.
 
 ---
 
 ## 🚀 Features
-1. **Dynamic Memory Partitioning:**  
-   - Users can input memory partition sizes and allocation requests at runtime.
-2. **Multiple Allocation Techniques:**  
-   - First-Fit  
-   - Best-Fit  
-   - Worst-Fit
-3. **Dynamic Algorithm Selection:**  
-   - Users can switch between allocation techniques during runtime.
-4. **Graphical Representation:**  
-   - Memory blocks are displayed in a visual format (e.g., tables or colored bars) showing their allocation status.
-5. **Deallocation Support:**  
-   - Frees up allocatedPartitions memory to simulate real-world usage scenarios.
-6. **Comparison and Evaluation:**  
-   - Automatically evaluates and suggests the most efficient algorithm based on memory usage and fragmentation.
+
+- **Dynamic Technique Selection**: Choose between First-Fit, Best-Fit, and Worst-Fit allocation techniques at runtime.
+- **Customizable Memory Partitions**: Enter and modify memory partition sizes dynamically during execution.
+- **Visual Representation**: View memory blocks and their allocation status through tables and color-coded indicators.
+- **Performance Metrics**: Measure and compare the efficiency of each allocation technique regarding memory usage and
+  fragmentation.
+- **Deallocation Support**: Simulate real-world scenarios by freeing up allocated memory blocks.
 
 ---
 
 ## 🖥️ Project Demo
-*Coming Soon!*  
+
+*Coming Soon!*
+
+---
+
+## Installation
+
+### Prerequisites
+
+- **C++ Compiler**: Ensure you have a C++17 compatible compiler installed (e.g., `g++`, `clang++`).
+- **CMake**: Recommended for building the project.
+- **Windows OS**: The current implementation utilizes Windows-specific libraries for console handling.
+
+### Steps
+
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/your-username/Dynamic-Memory-Allocator-Simulator.git
+   ```
+2. **Navigate to the Project Directory**
+
+  ```bash
+  cd Dynamic-Memory-Allocator-Simulator
+  ```
+
+3. **Build the Project**
+    - Using Cmake
+       ```bash
+       mkdir build
+       cd build
+       cmake ..
+       make
+       ```
+    - Alternatively, compile manually:
+       ```bash
+      g++ main.cpp src/*.cpp src/Allocation/*.cpp -o MemoryAllocatorSimulator 
+      ```
+4. **Run the Application**
+   ```bash
+   ./MemoryAllocatorSimulator
+   ```
+
+---
+
+## Usage
+
+Upon running the application, you will be greeted with a dynamic console interface where you can:
+
+1. Update Partition Values (Admins Only)
+
+   - Requires admin credentials to modify memory partition sizes.
+
+2. Use Default Partitions
+
+   - Proceed with predefined memory partitions or enter custom ones.
+
+3. Choose Allocation Technique
+
+   - Select between First-Fit, Best-Fit, and Worst-Fit to allocate memory for processes.
+
+4. Allocate and Deallocate Processes
+
+   - Add new processes with specific memory requirements.
+   - Free up memory by deallocating existing processes.
+
+5. Visualize Memory Allocation
+
+   - View memory blocks as tables with color-coded statuses indicating allocated or free spaces.
 
 ---
 
 ## 📂 Project Structure
-- **`main.cpp`**: Contains the entry point and high-level logic.  
-- **`allocator.cpp` and `allocator.h`**: Implements memory allocation algorithms.  
-- **`visualizer.cpp` and `visualizer.h`**: Manages graphical/console representation.  
-- **`utils.cpp` and `utils.h`**: Helper functions for memory operations and user input.  
+
+```text
+    Dynamic-Memory-Allocator-Simulator/
+    ├── data/
+    │   └── partitions
+    ├── include/
+    │   ├── Allocation/
+    │   │   ├── AllocationTechnique.h
+    │   │   ├── BestFit.h
+    │   │   ├── FirstFit.h
+    │   │   └── WorstFit.h
+    │   ├── Application.h
+    │   ├── ColorCode.h
+    │   ├── ConsoleHandler.h
+    │   └── UI.h
+    ├── src/
+    │   ├── Allocation/
+    │   │   ├── BestFit.cpp
+    │   │   ├── FirstFit.cpp
+    │   │   └── WorstFit.cpp
+    │   ├── Application.cpp
+    │   ├── ConsoleHandler.cpp
+    │   └── UI.cpp
+    ├── main.cpp
+    ├── README.md
+    └── LICENSE
+```
+- `main.cpp`: Initializes the application.
+- `include/`: Header files containing class declarations.
+- `Allocation/`: Contains different allocation technique classes.
+- `src/`: Source files containing class definitions and implementations.
+- `data/`: Directory for storing memory partition data.
 
 ---
 
-## 📊 Algorithms & Data Structures
-*To be added*  
-(Include details about the algorithms used and their time complexity.)
+## 🖥️ Demo
 
 ---
 
 ## 🛠️ Requirements
-1. **C++ Compiler**: Ensure you have a compatible C++ compiler (e.g., GCC or Clang).  
-2. **Development Environment**: Any IDE or text editor (e.g., Visual Studio, Code::Blocks, VS Code).  
+
+1. **C++ Compiler**: Ensure you have a compatible C++ compiler (e.g., GCC or Clang).
+2. **Development Environment**: Any IDE or text editor (e.g., CLion, Code::Blocks, VS Code).
 3. **Terminal with Color Support**: To enhance the visual representation.
 
 ---
 
 ## 📚 Usage Instructions
-1. Clone the repository:  
+
+1. Clone the repository:
    ```bash
    git clone https://github.com/yourusername/Dynamic-Memory-Allocator-Simulator.git
    ```
-2. Customize CMAKE file 
+2. Configure Cmake file
     ```cmake
-   cmake_minimum_required(VERSION 3.25)
+   cmake_minimum_required(VERSION 3.30)
    project(Dynamic_Memory_Allocator_Simulator)
    
    set(CMAKE_CXX_STANDARD 23)
@@ -72,31 +170,27 @@ A C++ project to simulate and compare memory allocation techniques in operating 
    src/UI.cpp
    main.cpp)
    ```
-3. Navigate to the project directory and compile:  
+3. Navigate to the project directory and compile:
    ```bash
    cd Dynamic-Memory-Allocator-Simulator
    g++ main.cpp allocator.cpp visualizer.cpp utils.cpp -o memory_simulator
    ```
-4. Run the program:  
+4. Run the program:
    ```bash
    ./memory_simulator
    ```
 
 ---
 
-## ✨ Future Improvements
-- Add support for more allocation techniques (e.g., Next-Fit).  
-- Integrate GUI-based visualization.  
-- Include benchmarking for larger memory sets.
-
----
-
 ## 💡 Contributions
-Contributions are welcome! Please create an issue or submit a pull request if you want to add a feature or improve the code.
+
+Contributions are welcome! Please create an issue or submit a pull request if you want to add a feature or improve the
+code.
 
 ---
 
 ## 📜 License
+
 This project is licensed under the [MIT License](LICENSE).
 
 ---
