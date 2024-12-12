@@ -8,19 +8,15 @@ using std::cout;
 void UI::DrawBoxBorder(int width, int height, int offsetX, int offsetY) {
     ConsoleHandler::SetColor(ColorCode::DarkGray);
 
-    // Top-left corner
     ConsoleHandler::SetCursorPosition(offsetX, offsetY);
     cout << char(201); // '╔'
 
-    // Top border
     for (int i = 1; i < width - 1; ++i) {
         cout << char(205); // '═'
     }
 
-    // Top-right corner
     cout << char(187); // '╗'
 
-    // Sides
     for (int i = 1; i < height - 1; ++i) {
         ConsoleHandler::SetCursorPosition(offsetX, offsetY + i);
         cout << char(186); // '║'
@@ -28,35 +24,28 @@ void UI::DrawBoxBorder(int width, int height, int offsetX, int offsetY) {
         cout << char(186); // '║'
     }
 
-    // Bottom-left corner
     ConsoleHandler::SetCursorPosition(offsetX, offsetY + height - 1);
     cout << char(200); // '╚'
 
-    // Bottom border
     for (int i = 1; i < width - 1; ++i) {
         cout << char(205); // '═'
     }
 
-    // Bottom-right corner
     cout << char(188); // '╝'
 }
 
 void UI::DrawTableBorder(int width, int height, int offsetX, int offsetY) {
     ConsoleHandler::SetColor(ColorCode::DarkGray);
 
-    // Top-left corner
     ConsoleHandler::SetCursorPosition(offsetX, offsetY);
     cout << char(218); // '┌'
 
-    // Top border
     for (int i = 1; i < width - 1; ++i) {
         cout << char(196); // '─'
     }
 
-    // Top-right corner
     cout << char(191); // '┐'
 
-    // Sides
     for (int i = 1; i < height - 1; ++i) {
         ConsoleHandler::SetCursorPosition(offsetX, offsetY + i);
         cout << char(179); // '│'
@@ -64,23 +53,19 @@ void UI::DrawTableBorder(int width, int height, int offsetX, int offsetY) {
         cout << char(179); // '│'
     }
 
-    // Bottom-left corner
     ConsoleHandler::SetCursorPosition(offsetX, offsetY + height - 1);
     cout << char(192); // '└'
 
-    // Bottom border
     for (int i = 1; i < width - 1; ++i) {
         cout << char(196); // '─'
     }
 
-    // Bottom-right corner
     cout << char(217); // '┘'
 }
 
 void UI::DrawHorizontalLine(int width, int offsetX, int offsetY) {
     ConsoleHandler::SetColor(ColorCode::DarkGray);
 
-    // Top border
     ConsoleHandler::SetCursorPosition(offsetX, offsetY);
     cout << char(195); // '├'
     for (int i = 1; i < width - 2; ++i) cout << char(196); // '─'
@@ -90,7 +75,6 @@ void UI::DrawHorizontalLine(int width, int offsetX, int offsetY) {
 void UI::DrawVerticalLine(int height, int offsetX, int offsetY) {
     ConsoleHandler::SetColor(ColorCode::DarkGray);
 
-    // Top border
     ConsoleHandler::SetCursorPosition(offsetX, offsetY);
     cout << char(194); // '┬'
     ConsoleHandler::SetCursorPosition(offsetX, offsetY + 1);
@@ -119,7 +103,7 @@ void UI::DisplayTitle(const std::string &title, int x, int y) {
     ConsoleHandler::SetColor(ColorCode::LightCyan);
     ConsoleHandler::SetCursorPosition(x, y);
     std::cout << title;
-    ConsoleHandler::SetColor(ColorCode::White); // Reset to default
+    ConsoleHandler::SetColor(ColorCode::White);
 }
 
 void UI::ClearRegion(int startX, int startY, int width, int height) {
@@ -130,42 +114,3 @@ void UI::ClearRegion(int startX, int startY, int width, int height) {
         }
     }
 }
-
-void UI::DrawSyriaFlag(int width, int offsetX, int offsetY) {
-    const int height = 9; // Adjust height for flag proportions
-
-    for (int y = 0; y < height; ++y) {
-        ConsoleHandler::SetCursorPosition(offsetX, offsetY + y);
-
-        if (y < height / 3) {
-            // Red band
-            ConsoleHandler::SetColor(ColorCode::Red);
-            for (int x = 0; x < width; ++x) {
-                std::cout << char(219);
-            }
-        } else if (y < 2 * height / 3) {
-            // White band with green stars
-            ConsoleHandler::SetColor(ColorCode::White);
-            for (int x = 0; x < width; ++x) {
-                ConsoleHandler::SetColor(ColorCode::White);
-                if ((x == width / 3 || x == 2 * width / 3) && y == height / 2) {
-                    // Draw green stars in the middle band
-                    ConsoleHandler::SetColor(ColorCode::Green);
-                    std::cout << '*';
-                    ConsoleHandler::SetColor(ColorCode::White);
-                } else {
-                    std::cout << char(219);
-                }
-            }
-        } else {
-            // Black band
-            ConsoleHandler::SetColor(ColorCode::Black);
-            for (int x = 0; x < width; ++x) {
-                std::cout << char(219);
-            }
-        }
-    }
-    // Reset color to default
-    ConsoleHandler::SetColor(ColorCode::White);
-}
-

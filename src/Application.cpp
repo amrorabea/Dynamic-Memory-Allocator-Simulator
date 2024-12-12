@@ -23,14 +23,12 @@ void Application::Initialize() {
     ConsoleHandler::ClearConsole();
     UI::DrawBoxBorder();
     DisplayFirstWindow();
-    // Exit is handled within DisplayFirstWindow's loop
 }
 
 void Application::LoadPartitions(const std::string &filename) {
     ifstream file(filename);
     if (!file.is_open()) {
         cerr << "Error opening the file: " << filename << "!" << endl;
-        // Consider throwing an exception or handling the error gracefully
         exit(EXIT_FAILURE);
     }
 
@@ -48,7 +46,7 @@ void Application::DisplayFirstWindow() {
     while (true) {
         UI::DisplayTime(1, 1);
         UI::DisplayTitle("Dynamic Memory Allocator Simulator", 40, 5);
-        UI::ClearRegion(2, 8, 86, 15); // Clear previous messages
+        UI::ClearRegion(2, 8, 86, 15);
         std::vector<std::string> asciiArt = {
             "   -----------------------------------------------------------------------",
             " /     ` .  `      '   .` .       `    ` .  `     .  ` ' `   `     ' .  .  \\",
@@ -222,7 +220,6 @@ void Application::DisplayUpdatePartitionsWindow() {
             cout << "Invalid input. Please enter an integer value between 0 and 9 Exclusive.";
             Sleep(1500);
         }
-        // clear window after get value
         ConsoleHandler::SetCursorPosition(20, 25);
         cout << "                                                                              ";
         ConsoleHandler::SetCursorPosition(20, 22);
@@ -249,7 +246,6 @@ void Application::DisplayUpdatePartitionsWindow() {
     partitions.clear();
     LoadPartitions();
 
-    // Return to the first window
     ConsoleHandler::ClearConsole();
     UI::DrawBoxBorder();
 }
@@ -821,7 +817,7 @@ void Application::visualizeAll() {
     std::set<int> st;
     std::string s;
     for (int i = 0; i < allocatedPartitions.size(); ++i) {
-        st = bestPartitions[i].process_id;
+        st = firstPartitions[i].process_id;
         x = (i) * 10 + 27, y = 15;
         ConsoleHandler::SetColor(ColorCode::LightBlue);
         ConsoleHandler::SetCursorPosition(x, y);
@@ -865,7 +861,7 @@ void Application::visualizeAll() {
     ConsoleHandler::SetCursorPosition(x, y);
     for (int i = 0; i < allocatedPartitions.size(); ++i) {
         ConsoleHandler::SetColor(ColorCode::LightBlue);
-        cout << bestPartitions[i].allocated;
+        cout << firstPartitions[i].allocated;
         ConsoleHandler::SetCursorPosition(x, ++y);
         ConsoleHandler::SetColor(ColorCode::LightGreen);
         cout << bestPartitions[i].allocated;
@@ -881,7 +877,7 @@ void Application::visualizeAll() {
     ConsoleHandler::SetCursorPosition(x, y);
     for (int i = 0; i < allocatedPartitions.size(); ++i) {
         ConsoleHandler::SetColor(ColorCode::LightBlue);
-        cout << bestPartitions[i].space - bestPartitions[i].allocated;
+        cout << firstPartitions[i].space - firstPartitions[i].allocated;
         ConsoleHandler::SetCursorPosition(x, ++y);
         ConsoleHandler::SetColor(ColorCode::LightGreen);
         cout << bestPartitions[i].space - bestPartitions[i].allocated;
@@ -935,7 +931,47 @@ void Application::visualizeAll() {
         ConsoleHandler::SetCursorPosition(4, 6);
         cout << "Process Space: ";
         cin >> processSpace;
-
+        bool can_best = 0, can_worse = 0, can_first = 0, can_wait = 0;
+        for (auto partition: partitions) {
+            if (partition >= processSpace) {
+                can_wait = 1;
+                for (const auto &[_, part]: worstPartitions) {
+                    if (part.space - part.allocated >= processSpace) {
+                        can_worse = 1;
+                        break;
+                    }
+                }
+                for (const auto &[_, part]: bestPartitions) {
+                    if (part.space - part.allocated >= processSpace) {
+                        can_best = 1;
+                        break;
+                    }
+                }
+                for (const auto &[_, part]: firstPartitions) {
+                    if (part.space - part.allocated >= processSpace) {
+                        can_first += 1;
+                        break;
+                    }
+                }
+            }
+            if (can_best && can_first && can_worse) break;
+        }
+        if (!can_wait) {
+            DisplayInvalidInput(4, 8, "The process space is larger"
+                                " than all partitions", 2000), visualizeAll();
+        }
+        if (!(can_best)) {
+            DisplayInvalidInput(4, 8, "The process space is larger than"
+                                " all unallocated partitions at best-fit, MUST Wait", 2000);
+        }
+        if (!(can_first)) {
+            DisplayInvalidInput(4, 8, "The process space is larger than"
+                                " all unallocated partitions at first-fit, MUST Wait", 2000);
+        }
+        if (!(can_worse)) {
+            DisplayInvalidInput(4, 8, "The process space is larger than"
+                                " all unallocated partitions at worst-fit, MUST Wait", 2000);
+        }
         Process newProcess(id, processSpace);
 
         FirstFit::allocate(newProcess, firstPartitions);
@@ -970,7 +1006,7 @@ void Application::visualizeAll() {
         }
         id = std::stoi(tmp);
 
-        FirstFit::deallocate(id, bestProcesses, bestPartitions);
+        FirstFit::deallocate(id, firstProcesses, firstPartitions);
 
         BestFit::deallocate(id, bestProcesses, bestPartitions);
 
