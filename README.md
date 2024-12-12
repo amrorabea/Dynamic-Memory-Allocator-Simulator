@@ -1,6 +1,6 @@
 # Dynamic-Memory-Allocator-Simulator
 
-![banner](https://github.com/user-attachments/assets/787aadd2-baac-4ed9-b076-6835e4983240)
+![banner](https://github.com/user-attachments/assets/fe354cc2-4e13-48c7-883c-d20099ca4192)
 
 ---
 
