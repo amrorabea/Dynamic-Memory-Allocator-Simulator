@@ -1,5 +1,3 @@
-# Dynamic-Memory-Allocator-Simulator
-
 ![banner](https://github.com/user-attachments/assets/fe354cc2-4e13-48c7-883c-d20099ca4192)
 
 ---
