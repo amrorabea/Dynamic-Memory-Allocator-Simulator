@@ -28,7 +28,7 @@ https://github.com/user-attachments/assets/2acf91f3-b76e-4730-af27-742d35908895
 
 ---
 
-## Installation
+## 📚 Installation
 
 ### Prerequisites
 
@@ -42,12 +42,31 @@ https://github.com/user-attachments/assets/2acf91f3-b76e-4730-af27-742d35908895
    ```bash
    git clone https://github.com/3bbaas/Dynamic-Memory-Allocator-Simulator.git
    ```
-2. **Navigate to the Project Directory**
+2. **Configure Cmake file**
+   ```cmake
+   cmake_minimum_required(VERSION 3.30)
+   project(Dynamic_Memory_Allocator_Simulator)
+   
+   set(CMAKE_CXX_STANDARD 23)
+   
+   include_directories(include)
+   include_directories(include/Allocation)
+   
+   add_executable(Dynamic_Memory_Allocator_Simulator
+   src/Allocation/BestFit.cpp
+   src/Allocation/FirstFit.cpp
+   src/Allocation/WorstFit.cpp
+   src/Application.cpp
+   src/ConsoleHandler.cpp
+   src/UI.cpp
+   main.cpp)
+   ```
+3. **Navigate to the Project Directory**
    ```bash
    cd Dynamic-Memory-Allocator-Simulator
    ```
 
-3. **Build the Project**
+4. **Build the Project**
     - Using Cmake
        ```bash
        mkdir build
@@ -59,7 +78,7 @@ https://github.com/user-attachments/assets/2acf91f3-b76e-4730-af27-742d35908895
       ```bash
       g++ main.cpp src/*.cpp src/Allocation/*.cpp -o MemoryAllocatorSimulator 
       ```
-4. **Run the Application**
+5. **Run the Application**
    ```bash
    ./MemoryAllocatorSimulator
    ```
@@ -138,43 +157,6 @@ Upon running the application, you will be greeted with a dynamic console interfa
 1. **C++ Compiler**: Ensure you have a compatible C++ compiler (e.g., GCC or Clang).
 2. **Development Environment**: Any IDE or text editor (e.g., CLion, Code::Blocks, VS Code).
 3. **Terminal with Color Support**: To enhance the visual representation.
-
----
-
-## 📚 Usage Instructions
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/Dynamic-Memory-Allocator-Simulator.git
-   ```
-2. Configure Cmake file
-    ```cmake
-   cmake_minimum_required(VERSION 3.30)
-   project(Dynamic_Memory_Allocator_Simulator)
-   
-   set(CMAKE_CXX_STANDARD 23)
-   
-   include_directories(include)
-   include_directories(include/Allocation)
-   
-   add_executable(Dynamic_Memory_Allocator_Simulator
-   src/Allocation/BestFit.cpp
-   src/Allocation/FirstFit.cpp
-   src/Allocation/WorstFit.cpp
-   src/Application.cpp
-   src/ConsoleHandler.cpp
-   src/UI.cpp
-   main.cpp)
-   ```
-3. Navigate to the project directory and compile:
-   ```bash
-   cd Dynamic-Memory-Allocator-Simulator
-   g++ main.cpp allocator.cpp visualizer.cpp utils.cpp -o memory_simulator
-   ```
-4. Run the program:
-   ```bash
-   ./memory_simulator
-   ```
 
 ---
 
