@@ -1,6 +1,6 @@
 # Dynamic-Memory-Allocator-Simulator
 
-![Project Banner](#) 
+![banner](https://github.com/user-attachments/assets/787aadd2-baac-4ed9-b076-6835e4983240)
 
 ---
 
@@ -9,8 +9,7 @@
 Memory management is a fundamental aspect of operating systems, crucial for optimizing performance and resource
 utilization. This project, **Dynamic-Memory-Allocator-Simulator**, is a C++ application designed to simulate and compare
 different memory allocation techniques: **First-Fit**, **Best-Fit**, and **Worst-Fit**. By visualizing how these
-algorithms allocate and deallocate memory, users can gain a deeper understanding of their efficiency in terms of memory
-usage and fragmentation.
+algorithms allocate and deallocate memory, users can gain a deeper understanding of their memory usage and fragmentation efficiency.
 
 ---
 
@@ -27,7 +26,7 @@ usage and fragmentation.
 
 ## 🖥️ Project Demo
 
-*Coming Soon!*
+https://github.com/user-attachments/assets/2acf91f3-b76e-4730-af27-742d35908895
 
 ---
 
