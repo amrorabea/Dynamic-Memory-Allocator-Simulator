@@ -43,10 +43,9 @@ https://github.com/user-attachments/assets/2acf91f3-b76e-4730-af27-742d35908895
    git clone https://github.com/your-username/Dynamic-Memory-Allocator-Simulator.git
    ```
 2. **Navigate to the Project Directory**
-
-  ```bash
-  cd Dynamic-Memory-Allocator-Simulator
-  ```
+   ```bash
+   cd Dynamic-Memory-Allocator-Simulator
+   ```
 
 3. **Build the Project**
     - Using Cmake
@@ -57,7 +56,7 @@ https://github.com/user-attachments/assets/2acf91f3-b76e-4730-af27-742d35908895
        make
        ```
     - Alternatively, compile manually:
-       ```bash
+      ```bash
       g++ main.cpp src/*.cpp src/Allocation/*.cpp -o MemoryAllocatorSimulator 
       ```
 4. **Run the Application**
