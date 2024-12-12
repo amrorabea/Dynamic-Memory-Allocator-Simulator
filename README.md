@@ -148,18 +148,6 @@ Upon running the application, you will be greeted with a dynamic console interfa
 
 ---
 
-## 🖥️ Demo
-
----
-
-## 🛠️ Requirements
-
-1. **C++ Compiler**: Ensure you have a compatible C++ compiler (e.g., GCC or Clang).
-2. **Development Environment**: Any IDE or text editor (e.g., CLion, Code::Blocks, VS Code).
-3. **Terminal with Color Support**: To enhance the visual representation.
-
----
-
 ## 💡 Contributions
 
 Contributions are welcome! Please create an issue or submit a pull request if you want to add a feature or improve the
