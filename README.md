@@ -40,7 +40,7 @@ https://github.com/user-attachments/assets/2acf91f3-b76e-4730-af27-742d35908895
 
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/your-username/Dynamic-Memory-Allocator-Simulator.git
+   git clone https://github.com/3bbaas/Dynamic-Memory-Allocator-Simulator.git
    ```
 2. **Navigate to the Project Directory**
    ```bash
