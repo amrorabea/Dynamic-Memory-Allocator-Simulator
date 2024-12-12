@@ -24,7 +24,7 @@ algorithms allocate and deallocate memory, users can gain a deeper understanding
 
 ## 🖥️ Project Demo
 
-https://github.com/user-attachments/assets/2acf91f3-b76e-4730-af27-742d35908895
+https://github.com/user-attachments/assets/5ce9e4ea-cfa0-49e0-82e7-299a177e5aae
 
 ---
 
